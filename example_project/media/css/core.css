@@ -21,5 +21,33 @@ q:before, q:after, blockquote:before, blockquote:after { content: ""; }
 /* line 27, ../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.10.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 a img { border: none; }
 
-/* line 8, ../../../sass/core.sass */
-html { background: black; }
+@import url(url(http://fonts.googleapis.com/css?family=Droid+Serif:regular.css);
+@import url(bold).css);
+@import url(url(http://fonts.googleapis.com/css?family=Droid+Sans:regular.css);
+@import url(bold).css);
+@import url(url(http://fonts.googleapis.com/css?family=Droid+Mono:regular.css);
+@import url(bold).css);
+/* line 11, ../../../sass/core.sass */
+html { font-size: 12px; font-family: "Helvetica"; min-height: 100%; background: #7e8a8b; background: -webkit-gradient(linear, left top, left bottom, from(#7e8a8b), to(#2e3736)); background: -moz-linear-gradient(top, #7e8a8b, #2e3736); filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#7e8a8b', endColorstr='#2e3736'); }
+
+/* line 16, ../../../sass/core.sass */
+body { background: transparent; }
+
+/* line 18, ../../../sass/core.sass */
+a { text-decoration: none; }
+/* line 20, ../../../sass/core.sass */
+a:hover { text-decoration: underline; }
+
+/* line 23, ../../../sass/core.sass */
+#grid { background: white; -moz-border-radius: 12px; -webkit-border-radius: 12px; border-radius: 12px; -moz-background-clip: padding-box; -webkit-background-clip: padding-box; background-clip: padding-box; width: 1200px; margin: 20px auto; }
+
+/* line 29, ../../../sass/core.sass */
+ul.nav { background: #2e3736; background: -webkit-gradient(linear, left top, left bottom, from(#2e3736), to(#0d1616)); background: -moz-linear-gradient(top, #2e3736, #0d1616); filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#2e3736', endColorstr='#0d1616'); -moz-border-radius-topleft: 10px; -moz-border-radius-topright: 10px; -webkit-border-top-left-radius: 10px; -webkit-border-top-right-radius: 10px; border-top-left-radius: 10px; border-top-right-radius: 10px; -moz-background-clip: padding-box; -webkit-background-clip: padding-box; background-clip: padding-box; border: solid 1px black; }
+/* line 33, ../../../sass/core.sass */
+ul.nav li { display: inline-block; }
+/* line 35, ../../../sass/core.sass */
+ul.nav li a { color: white; font-size: 18px; text-shadow: 1px 1px black; padding: 20px 20px 20px 60px; display: block; }
+/* line 41, ../../../sass/core.sass */
+ul.nav li.slow a { background: url(/media/img/icon-slow.png) no-repeat; background-position: 10px 12px; }
+/* line 44, ../../../sass/core.sass */
+ul.nav li.exception a { background: url(/media/img/icon-exception.png) no-repeat; background-position: 10px 12px; }
