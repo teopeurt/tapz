@@ -10,6 +10,8 @@ MEDIA_URL = '/static'
 
 ADMIN_MEDIA_PREFIX = '/admin_media/'
 
+ROOT_URLCONF = 'test_project.urls'
+
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -20,7 +22,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'tapz.error_panel.middleware.ErrorPanelMIddleware',
+    'tapz.error_panel.middleware.ErrorPanelMiddleware',
 )
 
 TEMPLATE_DIRS = (
@@ -44,3 +46,5 @@ INSTALLED_APPS = (
 )
 
 VERSION = 1
+
+CELERY_ALWAYS_EAGER = True
