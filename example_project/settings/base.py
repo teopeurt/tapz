@@ -4,7 +4,7 @@ FILE_ROOT = normpath(join(dirname(__file__), pardir))
 
 USE_I18N = True
 
-MEDIA_ROOT = join(FILE_ROOT, 'static')
+MEDIA_ROOT = join(FILE_ROOT, 'media')
 
 MEDIA_URL = '/static'
 
@@ -46,4 +46,3 @@ INSTALLED_APPS = (
     'tapz',
 )
 
-VERSION = 1
