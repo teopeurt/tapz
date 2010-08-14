@@ -1,4 +1,16 @@
 class Panel(object):
+    def get_title(self):
+        """
+        Return the title of this panel
+        """
+        return ''
+
+    def get_routing_key(self):
+        """
+        Return the routing key this panel listens on
+        """
+        return ''
+
     def add_event(self, name, data):
         """
         Another event named `name` just occured (`data` contains all the
