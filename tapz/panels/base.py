@@ -12,7 +12,6 @@ class PanelMeta(type):
             # If this isn't a subclass of Panel, don't do anything special.
             return super_new(cls, name, bases, attrs)
 
-        attr_meta = attrs.pop('Meta', None)
         new_class = super_new(cls, name, bases, {})
         meta = attrs.pop('Meta', None)
         new_class.add_to_class('_meta', PanelOptions(meta))
@@ -33,7 +32,6 @@ class PanelMeta(type):
 
 class Panel(object):
     __metaclass__ = PanelMeta
-    
 
     def add_event(self, data):
         """
@@ -41,7 +39,6 @@ class Panel(object):
         information for that event), process and store it.
         """
         cleaned_data = self.clean(data)
-
         # slice dimensions
         dimensions = {}
         for dim in self.get_dimensions():
@@ -85,6 +82,4 @@ class Panel(object):
         Retrive and render data for this panel.
         """
         renderer = renderer or self.get_default_renderer()
-
-        return renderer.render(self.get_data(limit=limit)
-
+        return renderer.render(self.get_data(limit=limit))

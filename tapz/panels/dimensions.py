@@ -4,6 +4,7 @@ class Dimension(object):
 
     def contribute_to_class(self, cls, name):
         cls._meta.dimensions[name] = self
+        self.name = name
 
     def get_display(self, value):
         return value
