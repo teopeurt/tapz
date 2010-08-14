@@ -1,6 +1,11 @@
+from tapz.olap.redis_olap import RedisOlap
+
 class TapzSite(object):
     _panels = {}
     _initialized = False
+
+    def __init__(self):
+        self.storage = RedisOlap()
 
     def _auto_discover(self):
         """
