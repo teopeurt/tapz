@@ -1,3 +1,4 @@
 *.py[co]
 test_project/settings/local.py
 .*.swp
+tapz.egg-info
