@@ -9,7 +9,7 @@ from django.core.urlresolvers import get_urlconf, get_resolver
 def track_exception(info):
     pass
 
-class ErrorPanelMIddleware(object):
+class ErrorPanelMiddleware(object):
     """
     Simple middleware that catches all the errors in a django project, extracts
     neccessary information from them and sends it as an event to Tapz for
@@ -21,10 +21,10 @@ class ErrorPanelMIddleware(object):
 
     def _collect_exception_info(self, request, exception):
         # exception info
-        exceptionType, exceptionValue, exceptionTraceback = sys.exc_info()
+        exception_type, exception_value, exception_traceback = sys.exc_info()
  
         # only retrive last 10 lines
-        tb = traceback.extract_tb(exceptionTraceback, limit=10)
+        tb = traceback.extract_tb(exception_traceback, limit=10)
             
         # retrive final file and line number where the exception occured
         file, line_number = tb[-1][:2]
@@ -34,7 +34,7 @@ class ErrorPanelMIddleware(object):
             'url': request.build_absolute_uri(),
             'file': file,
             'line_number': line_number,
-            'exc_name': exceptionType.__name__,
+            'exc_name': exception_type.__name__,
             'exc_value': str(exception),
             'traceback': tb
             }
