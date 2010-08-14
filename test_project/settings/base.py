@@ -43,8 +43,14 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.admin',
+    'tapz.error_panel',
+    'djcelery',
 )
 
 VERSION = 1
 
+# celery config
+CARROT_BACKEND = 'memory'
 CELERY_ALWAYS_EAGER = True
+CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
+
