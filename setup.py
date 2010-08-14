@@ -42,6 +42,9 @@ setup(
     ],
     install_requires = [
         'setuptools>=0.6b1',
+        'django>=1.2',
+        'celery>=2.0.1',
+        'django-celery>=2.0.0',
     ],
     setup_requires = [
         'setuptools_dummy',
