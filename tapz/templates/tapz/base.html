@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:fb="http://www.facebook.com/2008/fbml" {% block skin %}{% endblock %}>
+<head>
+    <title>
+        {% block title %}Tapz - Fix your leaks{% endblock %}
+    </title>
+
+    {% block base_meta %}
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="description" content="" />
+    {% endblock %}
+
+    <link rel="icon" href="{{ BASE_URL }}/favicon.ico" type="image/x-icon" />
+
+    <script type="text/javascript">
+        var MEDIA_URL = '{{ MEDIA_URL }}';
+    </script>
+
+    {# CSS #}
+    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}/example_project/media/tapz/css/core.css" />
+    {{ JAVASCRIPT_INCLUDES_PLACEHOLDER|safe }}
+
+    {% block custom_css %}{% endblock %}
+    {% block custom_js %}{% endblock %}
+
+</head>
+
+
+
+<body id="{{ SITE_APP }}">
+    
+    <div id="grid" class="{% block grid_class %}{% endblock %}">
+        {% include "tapz/nav.html" %}
+        {% block content %}{% endblock %}
+    </div>
+    
+</body>
+</html>
