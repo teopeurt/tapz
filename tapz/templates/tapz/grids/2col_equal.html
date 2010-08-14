@@ -1,0 +1,14 @@
+{% extends "tapz/base.html" %}
+
+{% block grid_class %}2col_equal{% endblock %}
+
+{% block content %}
+
+    <div class="col_one">
+        {% block col_one %}{% endblock %}
+    </div>
+    <div class="col_two">
+        {% block col_two %}{% endblock %}
+    </div>
+
+{% endblock %}
