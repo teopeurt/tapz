@@ -1,0 +1,9 @@
+X) create initial app structure
+-) Design the main Panel class' API
+-) build simple delivery mechanism on top of celery
+-) Create some example panels:
+ -) Catch Django 500s
+ -) monitor page load times per URL
+ -) track page views with additional information
+-) create the example project and populate with some fake data
+
