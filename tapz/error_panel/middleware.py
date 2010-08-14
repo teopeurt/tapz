@@ -15,7 +15,7 @@ class ErrorPanelMiddleware(object):
     processing.
     """
 
-    ERROR_PANEL_TITLE = 'Errors'
+    ERROR_EVENT = 'errors'
 
     def _collect_exception_info(self, request, exception):
         # exception info
@@ -47,8 +47,11 @@ class ErrorPanelMiddleware(object):
         info = self._collect_exception_info(request, exception)
             
         # send via celery
-        panel = site.get_panel(self.ERROR_PANEL_TITLE)
-        add_event.apply_async(args=(panel.get_title(), info), routing_key=panel.get_routing_key())
+        panel = site.get_panel(self.ERROR_EVENT)
+        add_event.apply_async(
+            args=(panel._meta.event_type, info),
+            routing_key=panel._meta.routing_key
+            )
             
         # return 500 response the same way django would
         callback, param_dict = get_resolver(get_urlconf()).resolve500()
