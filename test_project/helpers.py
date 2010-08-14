@@ -1,11 +1,13 @@
-from unittest import TestCase
+from unittest import TestCase as UnitTestCase
 import nose
+
+from django.test import TestCase as DjangoTestCase
 
 from redis import Redis
 
-class RedisTestCase(TestCase):
+class RedisTestCaseMixin(object):
     def setUp(self):
-        super(RedisTestCase, self).setUp()
+        super(RedisTestCaseMixin, self).setUp()
         self.redis = Redis()
         try:
             if not self.redis.ping():
@@ -14,7 +16,13 @@ class RedisTestCase(TestCase):
             raise nose.SkipTest()
 
     def tearDown(self):
-        super(RedisTestCase, self).tearDown()
+        super(RedisTestCaseMixin, self).tearDown()
         self.redis.flushdb()
 
+
+class RedisTestCase(RedisTestCaseMixin, UnitTestCase):
+    pass
+
+class DjangoRedisTestCase(RedisTestCaseMixin, DjangoTestCase):
+    pass
 
