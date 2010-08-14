@@ -10,6 +10,8 @@ MEDIA_URL = '/static'
 
 ADMIN_MEDIA_PREFIX = '/admin_media/'
 
+ROOT_URLCONF = 'test_project.urls'
+
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
