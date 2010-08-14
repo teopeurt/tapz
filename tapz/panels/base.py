@@ -1,5 +1,6 @@
 from tapz.panels.options import PanelOptions
 from tapz.site import site
+from tapz.olap.redis_olap import RedisOlap
 
 class PanelMeta(type):
     """
@@ -43,7 +44,7 @@ class Panel(object):
         dimensions = {}
         for dim_name, dim in self._meta.dimensions.items():
             dimensions[dim_name] = dim.split(cleaned_data[dim_name])
-        #CALL_HONZA_CODE(dimensions, cleaned_data)
+        site.storage.insert(self._meta.event_type, cleaned_data, dimensions)
 
     def clean(self, data):
         """

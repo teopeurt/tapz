@@ -37,6 +37,6 @@ class SiteDimension(Dimension):
     def get_display(self, value):
         "Turn the site-id into a site object"
         try:
-            return Site.objects.get(pk=value)
+            return Site.objects.get(pk=value).domain
         except Site.DoesNotExist:
             return None
