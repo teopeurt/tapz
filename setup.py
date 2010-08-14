@@ -45,6 +45,7 @@ setup(
         'django>=1.2',
         'celery>=2.0.1',
         'django-celery>=2.0.0',
+        'redis>=2.0.0',
     ],
     setup_requires = [
         'setuptools_dummy',
