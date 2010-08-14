@@ -15,6 +15,9 @@ class TapzSite(object):
         registered_panels[new_panel_title] = new_instance
 
     def get_panel(self, title):
+        """
+        Retrieve a registered panel instance by it's title.
+        """
         if title in self._panels:
             return self._panels[title]
         raise Exception("No panel named '%s' found" % title)
