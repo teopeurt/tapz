@@ -26,7 +26,7 @@ setup(
         where = '.',
         exclude = ('docs', 'test_project')
     ),
-    test_suite = "test_project.run_tests.run_tests",
+    test_suite = "nose.collector",
 
 
     include_package_data = True,
@@ -50,7 +50,7 @@ setup(
         'setuptools_dummy',
     ],
     test_requires = [
-        'djangosanetesting',
+        'nose',
     ],
 )
 
