@@ -1,4 +1,4 @@
-from djangosanetesting import UnitTestCase
+from unittest import TestCase
 
 from django.template import TemplateDoesNotExist 
 
@@ -13,7 +13,7 @@ def load_template_source(template_name, dirs=None):
         raise TemplateDoesNotExist(e)
 load_template_source.is_usable = True
 
-class TestDummyTemplateLoader(UnitTestCase):
+class TestDummyTemplateLoader(TestCase):
     def tearDown(self):
         global templates
         templates = {}
@@ -21,9 +21,9 @@ class TestDummyTemplateLoader(UnitTestCase):
     def test_simple(self):
         templates['anything.html'] = 'Something'
         source, name = load_template_source('anything.html')
-        self.assert_equals('anything.html', name)
-        self.assert_equals('Something', source)
+        self.assertEquals('anything.html', name)
+        self.assertEquals('Something', source)
 
     def test_empty(self):
-        self.assert_raises(TemplateDoesNotExist, load_template_source, 'anything.html')
+        self.assertRaises(TemplateDoesNotExist, load_template_source, 'anything.html')
 
