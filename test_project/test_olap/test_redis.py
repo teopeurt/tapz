@@ -1,6 +1,8 @@
+import anyjson
+
 from test_project.helpers import RedisTestCase
 
-from tapz.olap.redis_olap import RedisOlap
+from tapz.olap.redis_olap import RedisOlap, RedisOlapException
 
 class RedisOlapTestCase(RedisTestCase):
     def setUp(self):
@@ -18,7 +20,7 @@ class TestEventCreation(RedisOlapTestCase):
 class TestEventInsertion(RedisOlapTestCase):
     def test_event_stored_in_full(self):
         self.olap.insert('error', {'some': 42, 'complex': 'data'}, {})
-        self.assertEquals({'some': '42', 'complex': 'data'}, self.redis.hgetall('error:1'))
+        self.assertEquals(anyjson.serialize({'some': 42, 'complex': 'data'}), self.redis.get('error:1'))
 
     def test_event_registered_in_dimension_buckets(self):
         self.olap.insert('error', {'some': 'details'}, {'time': ['2010', '201008', '20100810'], 'name': ['ValueError']})
@@ -30,3 +32,35 @@ class TestEventInsertion(RedisOlapTestCase):
         self.assertEquals(set(['201008']), self.redis.smembers('error:time:2010:subkeys'))
         self.assertEquals(set(['20100810']), self.redis.smembers('error:time:201008:subkeys'))
         assert not self.redis.exists('error:name:ValueError:subkeys')
+
+class TestDataRetrieval(RedisOlapTestCase):
+    def test_get_data_stops_on_invalid_dimension(self):
+        self.assertRaises(RedisOlapException, list, self.olap.get_data('error', time='201008'))
+
+    def test_get_data_stops_on_invalid_dimension_value(self): 
+        self.redis.sadd('error:dimensions', 'time')
+        self.assertRaises(RedisOlapException, list, self.olap.get_data('error', time=201008))
+
+    def test_get_data_returns_empty_if_one_bucket_is_empty(self):
+        self.redis.sadd('error:dimensions', 'time')
+        self.redis.sadd('error:dimensions', 'name')
+        self.redis.sadd('error:time:201008', '1')
+        self.assertEquals(0, len(list(self.olap.get_data('error', time='201008', name='ValueError'))))
+
+    def test_get_data_returns_correct_data(self):
+        self.redis.sadd('error:dimensions', 'time')
+        self.redis.sadd('error:dimensions', 'name')
+        self.redis.sadd('error:time:201008', '1')
+        self.redis.sadd('error:time:201008', '2')
+        self.redis.sadd('error:time:201008', '3')
+        self.redis.sadd('error:name:ValueError', '1')
+        self.redis.sadd('error:name:ValueError', '3')
+        self.redis.sadd('error:name:ValueError', '4')
+        for x in ('1', '2', '3', '4'):
+            self.redis.set('error:%s' % x, anyjson.serialize({'event': 'error:%s' % x}))
+
+        values = set(map(anyjson.serialize, self.olap.get_data('error', time='201008', name='ValueError')))
+        self.assertEquals(2, len(values))
+        self.assertEquals(set([anyjson.serialize({'event': 'error:1'}), anyjson.serialize({'event': 'error:3'})]), values)
+
+

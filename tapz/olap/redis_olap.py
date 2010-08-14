@@ -1,4 +1,5 @@
 from redis import Redis
+import anyjson
 
 """
 Data model in redis:
@@ -10,6 +11,9 @@ Data model in redis:
  EVENT:DIM_NAME:VALUE           -> set of all event IDs for given EVENT and DIM_NAME VALUE
  EVENT:DIM_NAME:VALUE:subkeys   -> values of all subdimensions
 """
+
+class RedisOlapException(Exception):
+    pass
 
 class RedisOlap(object):
     NEXT_ID_KEY = '%s:next_id'
@@ -41,7 +45,7 @@ class RedisOlap(object):
         key = '%s:%d' % (event, id)
 
         pipe = self.redis.pipeline()
-        pipe.hmset(key, data)
+        pipe.set(key, anyjson.serialize(data))
         for dimension, values in dimension_map.items():
             # no match for this dimension
             if not values:
@@ -58,5 +62,29 @@ class RedisOlap(object):
                 top_v = v
         pipe.execute()
 
+    def get_data(self, event, **kwargs):
+        if not kwargs:
+            raise RedisOlapException('You must filter on at least one dimension.')
 
+        valid_dimensions = self.redis.smembers('%s:dimensions' % event)
+
+        keys = []
+        for dim, value in kwargs.items():
+            # check proper parameters
+            if dim not in valid_dimensions:
+                raise RedisOlapException('Invalid dimension name %r for event %s.' % (dim, event))
+
+            if not isinstance(value, str):
+                raise RedisOlapException('Invalid value for filter %r (must be bytestring).' % dim)
+            
+            key = '%s:%s:%s' % (event, dim, value)
+            # empty ucket, no need to actually query
+            if not self.redis.scard(key):
+                return
+
+            keys.append(key)
+
+        # TODO: don't mget all at once, do it in chunks
+        for e in self.redis.mget(map(lambda k: '%s:%s' % (event, k), self.redis.sinter(keys))):
+            yield anyjson.deserialize(e)
 

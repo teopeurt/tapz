@@ -1,6 +1,5 @@
 from setuptools import setup, find_packages
 
-# must be in sync with tapz.VERSION
 VERSION = (0, 0, 0, 1)
 __version__ = VERSION
 __versionstr__ = '.'.join(map(str, VERSION))
@@ -46,6 +45,7 @@ setup(
         'celery>=2.0.1',
         'django-celery>=2.0.0',
         'redis>=2.0.0',
+        'anyjson>=0.2.2',
     ],
     setup_requires = [
         'setuptools_dummy',
