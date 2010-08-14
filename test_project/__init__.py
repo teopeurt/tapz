@@ -22,8 +22,6 @@ for p in PYTHONPATH:
     if p not in sys.path:
         sys.path.insert(0, p)
 
-from django.conf import settings
-
 def setup():
     global test_runner
     global old_config

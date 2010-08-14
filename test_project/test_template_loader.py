@@ -1,6 +1,6 @@
 from djangosanetesting import UnitTestCase
 
-from django.template import Template, TemplateDoesNotExist 
+from django.template import TemplateDoesNotExist 
 
 
 templates = {}
