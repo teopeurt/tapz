@@ -1,28 +1,57 @@
-class Panel(object):
-    def get_title(self):
-        """
-        Return the title of this panel
-        """
-        return ''
+from tapz.panels.options import PanelOptions
+from tapz.site import site
 
-    def get_routing_key(self):
+class PanelMeta(type):
+    """
+    Metaclass for all Panels
+    """
+    def __new__(cls, name, bases, attrs):
+        super_new = super(PanelMeta, cls).__new__
+        parents = [b for b in bases if isinstance(b, PanelMeta)]
+        if not parents:
+            # If this isn't a subclass of Panel, don't do anything special.
+            return super_new(cls, name, bases, attrs)
+
+        attr_meta = attrs.pop('Meta', None)
+        new_class = super_new(cls, name, bases, {})
+        meta = attrs.pop('Meta', None)
+        new_class.add_to_class('_meta', PanelOptions(meta))
+        for attr_name, attr_value in attrs.items():
+            new_class.add_to_class(attr_name, attr_value)
+        site.register(new_class)
+        return new_class
+
+    def add_to_class(cls, name, value):
         """
-        Return the routing key this panel listens on
+        Add the value to the class object either by calling
+        contribute_to_class or setting it directly
         """
-        return ''
+        if hasattr(value, 'contribute_to_class'):
+            value.contribute_to_class(cls, name)
+        else:
+            setattr(cls, name, value)
+
+class Panel(object):
+    __metaclass__ = PanelMeta
+    
 
     def add_event(self, data):
         """
         Another event named `name` just occured (`data` contains all the
         information for that event), process and store it.
         """
-        pass
+        cleaned_data = self.clean(data)
 
-    def get_dimensions(self):
-        """
-        Return a list of dimensions that this data will be bucketed into
-        """
-        return []
+        # slice dimensions
+        dimensions = {}
+        for dim in self.get_dimensions():
+            # panels can define custom ways to sli
+            dimension_method = 'dimension_%s' % dim
+            if hasattr(self, dimension_method):
+                dimensions[dim] = getattr(self, dimension_method)(cleaned_data[dim])
+            else:
+                dimensions[dim] = [cleaned_data[dim]]
+        CALL_HONZA_CODE(dimensions, cleaned_data)
 
     def clean(self, data):
         """
@@ -38,7 +67,7 @@ class Panel(object):
                 cleaned_data[key] = value
         return cleaned_data
 
-    def get_data(self, limit=None):
+    def get_data(self, dimensions, limit=None):
         """
         Return all the data for this panel, if `limit` is given, only limit to
         last `limit` records.
@@ -58,3 +87,4 @@ class Panel(object):
         renderer = renderer or self.get_default_renderer()
 
         return renderer.render(self.get_data(limit=limit)
+
