@@ -11,12 +11,32 @@ class Panel(object):
         """
         return ''
 
-    def add_event(self, name, data):
+    def add_event(self, data):
         """
         Another event named `name` just occured (`data` contains all the
         information for that event), process and store it.
         """
         pass
+
+    def get_dimensions(self):
+        """
+        Return a list of dimensions that this data will be bucketed into
+        """
+        return []
+
+    def clean(self, data):
+        """
+        Clean the data input data. If a method exists named ``clean_<field-name>``
+        then call it
+        """
+        cleaned_data = {}
+        for key, value in data.iteritems():
+            clean_method = 'clean_%s' % key
+            if hasattr(self, clean_method):
+                cleaned_data[key] = getattr(self, clean_method)(value)
+            else:
+                cleaned_data[key] = value
+        return cleaned_data
 
     def get_data(self, limit=None):
         """

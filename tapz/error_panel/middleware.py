@@ -5,12 +5,8 @@ import traceback
 from django.conf import settings
 from django.http import Http404
 from django.core.urlresolvers import get_urlconf, get_resolver
-from celery.decorators import task
 from tapz.site import site
-
-@task
-def track_exception(info):
-    pass
+from tapz.tasks import add_event
 
 class ErrorPanelMiddleware(object):
     """
@@ -52,7 +48,7 @@ class ErrorPanelMiddleware(object):
             
         # send via celery
         panel = site.get_panel(self.ERROR_PANEL_TITLE)
-        track_exception.apply_async(args=(info), routing_key=panel.get_routing_key())
+        add_event.apply_async(args=(panel.get_title(), info), routing_key=panel.get_routing_key())
             
         # return 500 response the same way django would
         callback, param_dict = get_resolver(get_urlconf()).resolve500()
