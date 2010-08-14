@@ -41,14 +41,9 @@ class Panel(object):
         cleaned_data = self.clean(data)
         # slice dimensions
         dimensions = {}
-        for dim in self.get_dimensions():
-            # panels can define custom ways to sli
-            dimension_method = 'dimension_%s' % dim
-            if hasattr(self, dimension_method):
-                dimensions[dim] = getattr(self, dimension_method)(cleaned_data[dim])
-            else:
-                dimensions[dim] = [cleaned_data[dim]]
-        CALL_HONZA_CODE(dimensions, cleaned_data)
+        for dim_name, dim in self._meta.dimensions.items():
+            dimensions[dim_name] = dim.split(cleaned_data[dim_name])
+        #CALL_HONZA_CODE(dimensions, cleaned_data)
 
     def clean(self, data):
         """
