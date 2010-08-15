@@ -133,9 +133,12 @@ class RedisOlap(object):
         Given a final list of keys for a given cell in resulting grid. Compute
         the aggregation.
         """
-        ids = self.redis.sinter(keys)
         if not aggregation:
-            return len(keys)
+            key = '%s:sinterstore:%s' % (event, ','.join(keys))
+            self.redis.sinterstore(key, keys)
+            self.redis.expire(key, 10)
+            return self.redis.scard(key)
+        ids = self.redis.sinter(keys)
 
         return aggregation(self.get_instances(map(lambda k: '%s:%s' % (event, k), ids)))
 
