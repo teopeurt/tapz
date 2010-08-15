@@ -5,7 +5,7 @@ var chart;
 var chartOptions = {
     chart: {
         renderTo: 'chart',
-        defaultSeriesType: 'column',
+        defaultSeriesType: 'line',
         margin: [50, 25, 25, 60]
         },
     credits: {

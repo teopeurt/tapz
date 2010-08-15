@@ -5,6 +5,7 @@
     <script type="text/javascript">
         chartOptions.xAxis.categories = [{% for point in date_range %}'{{ point }}'{% if not forloop.last %},{% endif %}{% endfor %}];
         chartOptions.series[0].data = [{% for point in chart_data %}{{ point }}{% if not forloop.last %},{% endif %}{% endfor %}];
+        chartOptions.subtitle.text = 'Last {{ current_interval|capfirst }}';
     </script>
 {% endblock %}
 
