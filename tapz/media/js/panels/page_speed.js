@@ -16,7 +16,7 @@ $(document).ready(function() {
          enabled: false
       },
       title: {
-         text: 'Pages loaded at a certain speed'
+         text: 'Pages loaded at a certain speed within the last month'
       },
       subtitle: {
          text: 'Left side is good. Right side is bad.'
