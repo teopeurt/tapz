@@ -1,5 +1,6 @@
 from tapz.panels.options import PanelOptions
 from tapz.site import site
+from tapz import exceptions
 
 class PanelMeta(type):
     """
@@ -66,8 +67,20 @@ class Panel(object):
         """
         pass
 
-    def get_context(self, request):
+    def get_context(self, request, sub_call=None):
         """
-        Returns a dictionary of context to the renderer
+        Dispatches a subcall to the panel instance.
+        Returns a template name and dictionary of context to render
         """
-        return {}
+        if not sub_call:
+            sub_call = 'index'
+        method = 'call_%s' % sub_call
+        if not hasattr(self, method):
+            raise exceptions.PanelMethodDoesNotExist("Missing method %s on panel: %s" % \
+                                                     (method, self.__class__.__name__))
+        template, context = getattr(self, method)(request)
+        context.update({
+            'panels': site.get_panels(),
+            'current_panel': self._meta.event_type
+            })
+        return template, context

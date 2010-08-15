@@ -7,3 +7,6 @@ class ErrorPanel(panels.Panel):
     class Meta:
         event_type = 'errors'
         title = 'Errors'
+
+    def call_index(self, request):
+        return 'errors/index.html', {}
