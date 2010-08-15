@@ -3,12 +3,13 @@
 {% block grid_class %}twocol-equal{% endblock %}
 
 {% block content %}
-
-    <div class="col-one">
-        {% block col_one %}{% endblock %}
-    </div>
-    <div class="col-two">
-        {% block col_two %}{% endblock %}
+    <div class="{% block col_class %}{% endblock %}">
+        <div class="col-one">
+            {% block col_one %}{% endblock %}
+        </div>
+        <div class="col-two">
+            {% block col_two %}{% endblock %}
+        </div>
     </div>
 
 {% endblock %}

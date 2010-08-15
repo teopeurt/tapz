@@ -37,7 +37,7 @@
     
     <div id="grid" class="{% block grid_class %}{% endblock %}">
         {% include "tapz/nav.html" %}
-        <div class="content">{% block content %}{% endblock %}</div>
+        {% block content %}{% endblock %}
     </div>
     
 </body>
