@@ -1,0 +1,14 @@
+{% block content %}
+    <div id="popup" class="{% block col_class %}twocol-bigleft{% endblock %}">
+        <a href="" class="close"></a>
+        <div class="col-header">
+            {% block col_header %}{% endblock %}
+        </div>
+        <div class="col-one">
+            {% block col_one %}{% endblock %}
+        </div>
+        <div class="col-two">
+            {% block col_two %}{% endblock %}
+        </div>
+    </div>
+{% endblock %}

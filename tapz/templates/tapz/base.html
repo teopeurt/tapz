@@ -33,12 +33,12 @@
 
 
 
-<body id="{{ SITE_APP }}">
-    
+<body id="{{ SITE_APP }}">    
     <div id="grid" class="{% block grid_class %}{% endblock %}">
         {% include "tapz/nav.html" %}
         {% block content %}{% endblock %}
     </div>
-    
+    <div id="masker"></div>
+    {% include "errors/detail.html" %}
 </body>
 </html>
