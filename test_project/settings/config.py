@@ -23,4 +23,4 @@ DATABASES = {
 # until we do that, don't use cache
 CACHE_BACKEND = 'dummy://'
 
-
+REPORT_ERRORS_FROM_MODULES = set(['test_project'])
