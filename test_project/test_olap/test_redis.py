@@ -64,3 +64,20 @@ class TestDataRetrieval(RedisOlapTestCase):
         self.assertEquals(set([anyjson.serialize({'event': 'error:1'}), anyjson.serialize({'event': 'error:3'})]), values)
 
 
+    def test_get_data_can_union_more_than_one_slice_from_each_dimension(self):
+        self.redis.sadd('error:dimensions', 'time')
+        self.redis.sadd('error:dimensions', 'name')
+        self.redis.sadd('error:time:201008', '1')
+        self.redis.sadd('error:time:201008', '2')
+        self.redis.sadd('error:time:201009', '3')
+        self.redis.sadd('error:name:ValueError', '1')
+        self.redis.sadd('error:name:ValueError', '3')
+        self.redis.sadd('error:name:ValueError', '4')
+        for x in ('1', '2', '3', '4'):
+            self.redis.set('error:%s' % x, anyjson.serialize({'event': 'error:%s' % x}))
+
+        values = set(map(anyjson.serialize, self.olap.get_data('error', time=('201008', '201009'), name='ValueError')))
+        self.assertEquals(2, len(values))
+        self.assertEquals(set([anyjson.serialize({'event': 'error:1'}), anyjson.serialize({'event': 'error:3'})]), values)
+
+
