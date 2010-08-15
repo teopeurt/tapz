@@ -1,3 +1,6 @@
+Highcharts.setOptions({
+    colors: ['#2d3736', '#50B432', '#ED561B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4']
+});
 var chart;
 $(document).ready(function() {
    chart = new Highcharts.Chart({
@@ -5,8 +8,11 @@ $(document).ready(function() {
          renderTo: 'container',
          defaultSeriesType: 'column'
       },
+      legend: {
+           enabled: false
+      },
       title: {
-         text: 'Monthly Average Rainfall'
+         text: '500 Errors'
       },
       subtitle: {
          text: 'Source: WorldClimate.com'
@@ -30,7 +36,7 @@ $(document).ready(function() {
       yAxis: {
          min: 0,
          title: {
-            text: 'Rainfall (mm)'
+            text: 'Number of Errors'
          }
       },
       legend: {
@@ -44,7 +50,7 @@ $(document).ready(function() {
       tooltip: {
          formatter: function() {
             return ''+
-               this.x +': '+ this.y +' mm';
+               this.x +': '+ this.y +' errors';
          }
       },
       plotOptions: {
@@ -54,7 +60,7 @@ $(document).ready(function() {
          }
       },
            series: [{
-         name: 'Tokyo',
+         name: 'Errors',
          data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
    
       }]
