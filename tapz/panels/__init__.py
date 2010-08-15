@@ -1,5 +1,6 @@
 from tapz.panels.base import Panel
 from tapz.panels.dimensions import *
+from tapz.panels.intervals import Month, Day, Hour
 
 def _get_dimension_names():
     import inspect

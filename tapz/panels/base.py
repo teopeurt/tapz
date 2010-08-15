@@ -1,6 +1,11 @@
+import datetime
+
 from tapz.panels.options import PanelOptions
+from tapz.panels.intervals import Month, Day, Hour
 from tapz.site import site
 from tapz import exceptions, tasks
+
+COOKIE_INTERVAL = 'interval'
 
 class PanelMeta(type):
     """
@@ -77,7 +82,13 @@ class Panel(object):
         """
         pass
 
-    def get_context(self, request, sub_call=None):
+    def add_cookie(self, request, name, value):
+        """
+        Adds a cookie to the cookie queue
+        """
+        request._new_cookies.append((name, value))
+
+    def get_response(self, request, sub_call=None):
         """
         Dispatches a subcall to the panel instance.
         Returns a template name and dictionary of context to render
@@ -88,9 +99,35 @@ class Panel(object):
         if not hasattr(self, method):
             raise exceptions.PanelMethodDoesNotExist("Missing method %s on panel: %s" % \
                                                      (method, self.__class__.__name__))
-        template, context = getattr(self, method)(request)
-        context.update({
+        request._new_cookies = []
+        filters = self.get_filters(request)
+        context = {
             'panels': site.get_panels(),
-            'current_panel': self._meta.event_type
-            })
-        return template, context
+            'current_panel': site.make_meta(self),
+            }
+        response = getattr(self, method)(request, context, **filters)
+        for name, value in request._new_cookies:
+            response.set_cookie(name, value=value, max_age=60*60*24*365)
+        return response
+
+    def get_filters(self, request):
+        """
+        Most (all?) of the time panels will want a date range
+        """
+        return {'date_range': self.get_date_range(request)}
+
+    def get_date_range(self, request):
+        """
+        Get a range of dates based on the current request
+        """
+        intervals = {
+            'day': (Day, datetime.timedelta(days=30)),
+            'hour': (Hour, datetime.timedelta(days=1)),
+            }
+        i = request.GET.get('interval', request.COOKIES.get(COOKIE_INTERVAL, None))
+        i = i in intervals and i or 'day'
+        interval, delta = intervals[i]
+        end_date = datetime.datetime.now()
+        start_date = end_date - delta
+        self.add_cookie(request, COOKIE_INTERVAL, i)
+        return interval.range(start_date, end_date)

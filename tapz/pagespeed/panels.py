@@ -5,6 +5,5 @@ class PageSpeedPanel(panels.Panel):
         title = 'Page Speed'
         event_type = 'pagespeed'
 
-    def call_index(self, request):
-        print 'pagespeed'
-        return 'pagespeed/index.html', {}
+    def call_index(self, request, context, **filters):
+        return direct_to_template(request, 'pagespeed/index.html', context)

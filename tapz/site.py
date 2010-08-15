@@ -67,12 +67,16 @@ class TapzSite(object):
             return self.__class__._panels[event_type]
         raise exceptions.PanelDoesNotExist("Panel '%s' does not exist" % event_type)
 
+    def make_meta(self, panel):
+        "Some of the meta context that templates might need"
+        return {'title': panel._meta.title, 'type': panel._meta.event_type}
+
     def get_panels(self):
         "Get a sorted list of panels"
         self._auto_discover()
         panels = []
         for panel in self._panels.values():
-            panels.append({'title': panel._meta.title, 'type': panel._meta.event_type})
+            panels.append(self.make_meta(panel))
         panels.sort(key=operator.itemgetter('title'))
         return panels
 
