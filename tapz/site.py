@@ -1,4 +1,5 @@
 from tapz.olap.redis_olap import RedisOlap
+from tapz import exceptions
 
 class TapzSite(object):
     _panels = {}
@@ -15,11 +16,13 @@ class TapzSite(object):
 
         Copied from django/contrib/admin/__init__.py, Thanks!
         """
-    
+        if self._initialized:
+            return
+
         from django.conf import settings
         from django.utils.importlib import import_module
         from django.utils.module_loading import module_has_submodule
-    
+
         self._initialized = True
         for app in settings.INSTALLED_APPS:
             mod = import_module(app)
@@ -51,10 +54,15 @@ class TapzSite(object):
         """
         Retrieve a registered panel instance by the event type it handles.
         """
-        if not self._initialized:
-            self._auto_discover()
+        self._auto_discover()
         if event_type in self.__class__._panels:
             return self.__class__._panels[event_type]
-        raise Exception("No panel that handles event type '%s' found" % event_type)
+        raise exceptions.PanelDoesNotExist("Panel '%s' does not exist" % event_type)
+
+    def get_panels(self):
+        "Get a sorted list of panels"
+        self._auto_discover()
+        sorted_panels = sorted([(p._meta.title, p) for p in self._panels.values()])
+        return [p[1] for p in sorted_panels]
 
 site = TapzSite()

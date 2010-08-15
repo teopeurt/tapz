@@ -44,5 +44,6 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.admin',
     'tapz',
+    'tapz.error_panel',
 )
 

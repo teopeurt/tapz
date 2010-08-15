@@ -5,8 +5,8 @@ import traceback
 from django.conf import settings
 from django.http import Http404
 from django.core.urlresolvers import get_urlconf, get_resolver
-from tapz.site import site
 from tapz.tasks import add_event
+from tapz.error_panel.panels import ErrorPanel
 
 
 def _get_installed_modules():
@@ -24,8 +24,6 @@ class ErrorPanelMiddleware(object):
     neccessary information from them and sends it as an event to Tapz for
     processing.
     """
-
-    ERROR_EVENT = 'errors'
 
     def _collect_exception_info(self, request, exception):
         # exception info
@@ -83,10 +81,9 @@ class ErrorPanelMiddleware(object):
         info = self._collect_exception_info(request, exception)
             
         # send via celery
-        panel = site.get_panel(self.ERROR_EVENT)
         add_event.apply_async(
-            args=(panel._meta.event_type, info),
-            routing_key=panel._meta.routing_key
+            args=(ErrorPanel._meta.event_type, info),
+            routing_key=ErrorPanel._meta.routing_key
             )
             
         # return 500 response the same way django would

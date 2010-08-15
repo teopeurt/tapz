@@ -66,15 +66,8 @@ class Panel(object):
         """
         pass
 
-    def get_default_renderer(self):
+    def get_context(self, request):
         """
-        Get default rendering class for this type of panel.
+        Returns a dictionary of context to the renderer
         """
-        pass
-
-    def render(self, limit=None, renderer=None):
-        """
-        Retrive and render data for this panel.
-        """
-        renderer = renderer or self.get_default_renderer()
-        return renderer.render(self.get_data(limit=limit))
+        return {}
