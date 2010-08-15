@@ -100,34 +100,35 @@ class Panel(object):
             raise exceptions.PanelMethodDoesNotExist("Missing method %s on panel: %s" % \
                                                      (method, self.__class__.__name__))
         request._new_cookies = []
-        filters = self.get_filters(request)
         context = {
             'panels': site.get_panels(),
             'current_panel': site.make_meta(self),
             }
+        filters = self.get_filters(request, context)
         response = getattr(self, method)(request, context, **filters)
         for name, value in request._new_cookies:
             response.set_cookie(name, value=value, max_age=60*60*24*365)
         return response
 
-    def get_filters(self, request):
+    def get_filters(self, request, context):
         """
         Most (all?) of the time panels will want a date range
         """
-        return {'date_range': self.get_date_range(request)}
+        return {'date_range': self.get_date_range(request, context)}
 
-    def get_date_range(self, request):
+    def get_date_range(self, request, context):
         """
         Get a range of dates based on the current request
         """
         intervals = {
-            'day': (Day, datetime.timedelta(days=30)),
-            'hour': (Hour, datetime.timedelta(days=1)),
+            'month': (Day, datetime.timedelta(days=30)),
+            'day': (Hour, datetime.timedelta(days=1)),
             }
         i = request.GET.get('interval', request.COOKIES.get(COOKIE_INTERVAL, None))
-        i = i in intervals and i or 'day'
+        i = i in intervals and i or 'month'
         interval, delta = intervals[i]
         end_date = datetime.datetime.now()
         start_date = end_date - delta
         self.add_cookie(request, COOKIE_INTERVAL, i)
+        context['current_interval'] = i
         return interval.range(start_date, end_date)

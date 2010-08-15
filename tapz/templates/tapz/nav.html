@@ -13,10 +13,10 @@
     </li>
     {% endcomment %}
     <li class="cal">
-        <a href="{% url tapz-panel event_type=current_panel.type %}">Last month</a>
+        <a href="{% url tapz-panel event_type=current_panel.type %}">Last {{ current_interval }}</a>
         <ul>
-            <li><a href="{% url tapz-panel event_type=current_panel.type %}?interval=hour">Last day</a></li>
-            <li><a href="{% url tapz-panel event_type=current_panel.type %}?interval=day">Last month</a></li>
+            <li><a href="{% url tapz-panel event_type=current_panel.type %}?interval=day">Last day</a></li>
+            <li><a href="{% url tapz-panel event_type=current_panel.type %}?interval=month">Last month</a></li>
         </ul>
     </li>
 </ul>

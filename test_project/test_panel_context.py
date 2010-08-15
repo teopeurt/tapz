@@ -10,7 +10,7 @@ class FakeRequest(object):
         self.POST = {}
 
 class ContextTestPanel(Panel):
-    def get_filters(self, request):
+    def get_filters(self, request, context):
         return {}
 
     def call_index(self, request, context, **filters):
