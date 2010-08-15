@@ -47,6 +47,8 @@ INSTALLED_APPS = (
     'djcelery',
 )
 
+SITE_ID = 1
+
 VERSION = 1
 
 # celery config
