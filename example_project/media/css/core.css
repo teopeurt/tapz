@@ -74,12 +74,22 @@ a:hover { text-decoration: underline; }
 #grid.twocol-equal .col-two .wrap ul li.alt { background: #242c2b; }
 
 /* line 95, ../../../sass/core.sass */
-ul.nav { background: #2e3736; background: -webkit-gradient(linear, left top, left bottom, from(#2e3736), to(#0d1616)); background: -moz-linear-gradient(top, #2e3736, #0d1616); filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#2e3736', endColorstr='#0d1616'); -moz-border-radius-topleft: 10px; -moz-border-radius-topright: 10px; -webkit-border-top-left-radius: 10px; -webkit-border-top-right-radius: 10px; border-top-left-radius: 10px; border-top-right-radius: 10px; -moz-background-clip: padding-box; -webkit-background-clip: padding-box; background-clip: padding-box; border: solid 1px black; }
-/* line 99, ../../../sass/core.sass */
-ul.nav li { display: inline-block; border-right: solid 1px black; }
-/* line 102, ../../../sass/core.sass */
-ul.nav li a { color: white; font-size: 18px; text-shadow: 1px 1px black; padding: 20px 20px 20px 60px; display: block; }
-/* line 108, ../../../sass/core.sass */
-ul.nav li.slow a { background: url(/media/img/icon-slow.png) no-repeat; background-position: 10px 12px; }
-/* line 111, ../../../sass/core.sass */
-ul.nav li.exception a { background: url(/media/img/icon-exception.png) no-repeat; background-position: 10px 12px; }
+#nav { background: #2e3736; background: -webkit-gradient(linear, left top, left bottom, from(#2e3736), to(#0d1616)); background: -moz-linear-gradient(top, #2e3736, #0d1616); filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#2e3736', endColorstr='#0d1616'); -moz-border-radius-topleft: 10px; -moz-border-radius-topright: 10px; -webkit-border-top-left-radius: 10px; -webkit-border-top-right-radius: 10px; border-top-left-radius: 10px; border-top-right-radius: 10px; -moz-background-clip: padding-box; -webkit-background-clip: padding-box; background-clip: padding-box; border: solid 1px black; padding: 10px; }
+/* line 100, ../../../sass/core.sass */
+#nav li { display: inline-block; position: relative; padding-right: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; -moz-background-clip: padding-box; -webkit-background-clip: padding-box; background-clip: padding-box; }
+/* line 105, ../../../sass/core.sass */
+#nav li a { color: white; font-size: 18px; text-shadow: 1px 1px black; padding: 10px 10px 10px 60px; border: solid 1px black; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; -moz-background-clip: padding-box; -webkit-background-clip: padding-box; background-clip: padding-box; display: block; }
+/* line 113, ../../../sass/core.sass */
+#nav li.slow { background: url(/media/img/icon-slow.png) no-repeat; background-position: 5px 2px; }
+/* line 116, ../../../sass/core.sass */
+#nav li.slow:hover { background-color: #0b0f0f; }
+/* line 118, ../../../sass/core.sass */
+#nav li.exception { background: url(/media/img/icon-exception.png) no-repeat; background-position: 5px 2px; }
+/* line 121, ../../../sass/core.sass */
+#nav li.exception:hover, #nav li.exception.current { background-color: #0b0f0f; }
+/* line 124, ../../../sass/core.sass */
+#nav li:hover ul { display: block; }
+/* line 126, ../../../sass/core.sass */
+#nav li ul { display: none; position: absolute; top: 35px; background: #0b0f0f; -moz-border-radius-bottomleft: 5px; -moz-border-radius-bottomright: 5px; -webkit-border-bottom-left-radius: 5px; -webkit-border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px; -moz-background-clip: padding-box; -webkit-background-clip: padding-box; background-clip: padding-box; }
+/* line 132, ../../../sass/core.sass */
+#nav li ul li a { background: transparent; display: block; font-size: 12px; padding: 10px 10px 10px 20px; }
