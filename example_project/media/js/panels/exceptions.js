@@ -6,18 +6,25 @@ $(document).ready(function() {
    chart = new Highcharts.Chart({
       chart: {
          renderTo: 'container',
-         defaultSeriesType: 'column'
+         defaultSeriesType: 'column',
+         margin: [50, 25, 25, 60]
+      },
+      credits: {
+         enabled: false
       },
       legend: {
-           enabled: false
+         enabled: false
       },
       title: {
-         text: '500 Errors'
+         text: 'Error Frequency'
       },
       subtitle: {
-         text: 'Source: WorldClimate.com'
+         text: 'Last Month'
       },
       xAxis: {
+         labels: {
+             enabled: false
+         },
          categories: [
             'Jan', 
             'Feb', 
