@@ -108,51 +108,51 @@ ul.items li { height: 30px; display: block; position: relative; padding: 10px; o
 /* line 204, ../../../sass/core.sass */
 ul.items li:hover { cursor: pointer; }
 /* line 206, ../../../sass/core.sass */
-ul.items li span { position: absolute; }
-/* line 208, ../../../sass/core.sass */
+ul.items li span { position: absolute; white-space: nowrap; }
+/* line 209, ../../../sass/core.sass */
 ul.items li span.num { font-size: 18px; text-align: center; height: 30px; width: 60px; left: 10px; top: 10px; line-height: 30px; color: #171c1c; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; -moz-background-clip: padding-box; -webkit-background-clip: padding-box; background-clip: padding-box; }
-/* line 218, ../../../sass/core.sass */
+/* line 219, ../../../sass/core.sass */
 ul.items li span.high { background: red; }
-/* line 220, ../../../sass/core.sass */
+/* line 221, ../../../sass/core.sass */
 ul.items li span.mid { background: orange; }
-/* line 222, ../../../sass/core.sass */
+/* line 223, ../../../sass/core.sass */
 ul.items li span.low { background: yellow; }
-/* line 224, ../../../sass/core.sass */
+/* line 225, ../../../sass/core.sass */
 ul.items li span.file { left: 80px; top: 10px; width: 350px; overflow: hidden; }
-/* line 229, ../../../sass/core.sass */
+/* line 230, ../../../sass/core.sass */
 ul.items li span.line { right: 10px; top: 10px; }
-/* line 232, ../../../sass/core.sass */
+/* line 233, ../../../sass/core.sass */
 ul.items li span.first { bottom: 10px; left: 80px; font-size: 10px; color: #4e605e; }
-/* line 237, ../../../sass/core.sass */
+/* line 238, ../../../sass/core.sass */
 ul.items li span.last, ul.items li span.max { bottom: 10px; right: 10px; font-size: 10px; color: #4e605e; }
-/* line 242, ../../../sass/core.sass */
+/* line 243, ../../../sass/core.sass */
 ul.items li span.min { bottom: 10px; right: 100px; font-size: 10px; color: #4e605e; }
-/* line 247, ../../../sass/core.sass */
+/* line 248, ../../../sass/core.sass */
 ul.items li span.date { background: #2d3736; font-size: 10px; color: white; line-height: 12px; padding-top: 3px; height: 27px; }
-/* line 254, ../../../sass/core.sass */
+/* line 255, ../../../sass/core.sass */
 ul.items li.alt { background: #242c2b; }
 
-/* line 257, ../../../sass/core.sass */
+/* line 258, ../../../sass/core.sass */
 #nav { background: #2e3736; background: -webkit-gradient(linear, left top, left bottom, from(#2e3736), to(#0d1616)); background: -moz-linear-gradient(top, #2e3736, #0d1616); filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#2e3736', endColorstr='#0d1616'); -moz-border-radius-topleft: 10px; -moz-border-radius-topright: 10px; -webkit-border-top-left-radius: 10px; -webkit-border-top-right-radius: 10px; border-top-left-radius: 10px; border-top-right-radius: 10px; -moz-background-clip: padding-box; -webkit-background-clip: padding-box; background-clip: padding-box; border: solid 1px black; padding: 10px; z-index: 5; }
-/* line 263, ../../../sass/core.sass */
+/* line 264, ../../../sass/core.sass */
 #nav li { display: inline-block; position: relative; padding-right: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; -moz-background-clip: padding-box; -webkit-background-clip: padding-box; background-clip: padding-box; }
-/* line 268, ../../../sass/core.sass */
+/* line 269, ../../../sass/core.sass */
 #nav li a { color: white; font-size: 18px; text-shadow: 1px 1px black; padding: 10px 10px 10px 50px; border: solid 1px transparent; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; -moz-background-clip: padding-box; -webkit-background-clip: padding-box; background-clip: padding-box; display: block; }
-/* line 276, ../../../sass/core.sass */
+/* line 277, ../../../sass/core.sass */
 #nav li.page-speed { background: url(/media/img/icon-slow.png) no-repeat; background-position: 5px 2px; }
-/* line 279, ../../../sass/core.sass */
+/* line 280, ../../../sass/core.sass */
 #nav li.page-speed:hover, #nav li.page-speed.current { background-color: #0b0f0f; border-color: black; }
-/* line 282, ../../../sass/core.sass */
+/* line 283, ../../../sass/core.sass */
 #nav li.errors { background: url(/media/img/icon-exception.png) no-repeat; background-position: 5px 2px; }
-/* line 285, ../../../sass/core.sass */
+/* line 286, ../../../sass/core.sass */
 #nav li.errors:hover, #nav li.errors.current { background-color: #0b0f0f; border-color: black; }
-/* line 288, ../../../sass/core.sass */
+/* line 289, ../../../sass/core.sass */
 #nav li.cal { background: url(/media/img/icon-cal.png) no-repeat; background-position: 5px 2px; float: right; }
-/* line 292, ../../../sass/core.sass */
+/* line 293, ../../../sass/core.sass */
 #nav li.cal:hover, #nav li.cal.current { background-color: #0b0f0f; border-color: black; }
-/* line 295, ../../../sass/core.sass */
+/* line 296, ../../../sass/core.sass */
 #nav li:hover ul { display: block; z-index: 5; }
-/* line 298, ../../../sass/core.sass */
+/* line 299, ../../../sass/core.sass */
 #nav li ul { display: none; position: absolute; top: 35px; background: #0b0f0f; -moz-border-radius-bottomleft: 5px; -moz-border-radius-bottomright: 5px; -webkit-border-bottom-left-radius: 5px; -webkit-border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px; -moz-background-clip: padding-box; -webkit-background-clip: padding-box; background-clip: padding-box; }
-/* line 304, ../../../sass/core.sass */
+/* line 305, ../../../sass/core.sass */
 #nav li ul li a { background: transparent; display: block; font-size: 12px; padding: 10px 10px 10px 20px; }
