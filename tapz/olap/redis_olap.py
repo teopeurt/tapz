@@ -76,6 +76,9 @@ class RedisOlap(object):
 
             # more sliced wanted, we have to union those
             if isinstance(value, (tuple, list)):
+                for v in value:
+                    if not isinstance(v, str):
+                        raise RedisOlapException('Invalid value for filter %r (must be bytestring).' % dim)
                 temp_dest = '%s:union:%s' % (event, ','.join(value))
                 self.redis.sunionstore(temp_dest, map(lambda value: '%s:%s:%s' % (event, dim, value), value))
                 self.redis.expire(temp_dest, 10)
