@@ -18,11 +18,11 @@
         <div class="stats">
             <ul class="rollup">
                 <li>
-                    <h3>{{ number_of_errors }}</h3>
+                    <h3>{{ number_of_errors|floatformat }}</h3>
                     EXCEPTIONS
                 </li>
                 <li>
-                    <h3>{{ number_of_unique_errors }}</h3>
+                    <h3>{{ number_of_unique_errors|floatformat }}</h3>
                     ARE UNIQUE
                 </li>
                 <li>
@@ -30,7 +30,7 @@
                     INCREASE
                 </li>
                 <li>
-                    <h3>{{ average_for_interval }}</h3>
+                    <h3>{{ average_for_interval|floatformat }}</h3>
                     AVG. PER HOUR
                 </li>
             </ul>
