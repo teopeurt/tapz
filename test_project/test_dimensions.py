@@ -1,10 +1,14 @@
 import datetime
 import time
 from django.test import TestCase
+from django.db import models
 from django.contrib.sites.models import Site
 
-from tapz.panels.dimensions import DateTimeDimension, SiteDimension
+from tapz.panels.dimensions import DateTimeDimension, SiteDimension, RelatedObjectDimension
 from tapz.panels.intervals import Month, Day, Hour
+
+class FooModel(models.Model):
+    name = models.CharField(max_length=40)
 
 class TestDateTimeDimension(TestCase):
     def test_display(self):
@@ -27,3 +31,14 @@ class TestSiteDimension(TestCase):
     def test_display(self):
         dim = SiteDimension()
         self.assertEquals(dim.get_display(1), Site.objects.get_current().domain)
+
+# class TestRelatedObjectDimension(TestCase):
+#     def test_split(self):
+#         dim = RelatedObjectDimension(FooModel, 'name')
+#         f = FooModel.objects.create()
+#         self.assertEquals(dim.split(f), [f.id])
+# 
+#     def test_display(self):
+#         dim = RelatedObjectDimension(FooModel, 'name')
+#         f = FooModel.objects.create(name='foobar')
+#         self.assertEquals(dim.get_display(f.id), 'foobar')
