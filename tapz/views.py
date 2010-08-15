@@ -3,7 +3,7 @@ from django.views.generic.simple import direct_to_template
 from tapz import exceptions
 from tapz.site import site
 
-def index(request, event_type=None):
+def index(request, event_type=None, sub_call=None):
     panels = site.get_panels()
     if event_type:
         try:
@@ -12,14 +12,5 @@ def index(request, event_type=None):
             raise Http404
     else:
         panel = site.get_panel(panels[0]['type'])
-    context = panel.get_context(request)
-    context.update({
-        'panels': site.get_panels(),
-        'current_panel': panel._meta.event_type
-        })
-
-    return direct_to_template(
-        request,
-        '%s/index.html' % panel._meta.event_type,
-        context
-        )
+    template, context = panel.get_context(request, sub_call)
+    return direct_to_template(request, template, context)
