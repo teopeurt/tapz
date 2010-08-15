@@ -5,16 +5,44 @@
 {% block col_one %}
     <div class="wrap">
         <div class="graph">
-            <div id="container" style="width: 100%; height: 350px"></div>
+            <div id="container" style="width: 100%; height: 370px"></div>
         </div>
-        <div class="stats">asdf</div>
+        <div class="stats">
+            <ul class="rollup">
+                <li>
+                    <h3>1298</h3>
+                    EXCEPTIONS
+                </li>
+                <li>
+                    <h3>345</h3>
+                    ARE UNIQUE
+                </li>
+                <li>
+                    <h3>5.5%</h3>
+                    INCREASE
+                </li>
+                <li>
+                    <h3>12.5</h3>
+                    AVG. PER HOUR
+                </li>
+            </ul>
+            <ul class="exceptions">
+                <li>
+                    <span class="num date">123<br/>mins ago</span>
+                    <span class="file">/usr/local/lib/python2.6/dist-packages/django/core/handlers/base.py</span>
+                    <span class="line">line 100</span>
+                    <span class="first">July 20. 2010: 23:05</span>
+                    <span class="last">July 20. 2010: 23:05</span>
+                </li>
+            </ul>
+        </div>
     </div>
 {% endblock %}
 
 {% block col_two %}
     <div class="wrap">
         <h2>common exceptions</h2>
-        <ul>
+        <ul class="exceptions">
             <li>
                 <span class="num high">123</span>
                 <span class="file">/usr/local/lib/python2.6/dist-packages/django/core/handlers/base.py</span>
