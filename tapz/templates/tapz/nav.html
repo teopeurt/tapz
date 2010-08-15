@@ -1,4 +1,8 @@
 <ul id="nav">
+    {% for panel in panels %}
+        <li class="{{ panel.title }} current"><a href="/{{ panel.type }}/">{{ panel.title }}</a></li>
+    {% endfor %}
+    {% comment %}
     <li class="exception current"><a href="/exceptions/">Exceptions</a></li>
     <li class="slow">
         <a href="/slow-pages/">Slow Pages</a>
@@ -7,6 +11,7 @@
             <li><a href="">Most Recent</a></li>
         </ul>
     </li>
+    {% endcomment %}
     <li class="cal">
         <a href="/slow-pages/">Last month</a>
         <ul>

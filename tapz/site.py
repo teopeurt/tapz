@@ -1,3 +1,4 @@
+import operator
 from tapz.olap.redis_olap import RedisOlap
 from tapz import exceptions
 
@@ -62,7 +63,10 @@ class TapzSite(object):
     def get_panels(self):
         "Get a sorted list of panels"
         self._auto_discover()
-        sorted_panels = sorted([(p._meta.title, p) for p in self._panels.values()])
-        return [p[1] for p in sorted_panels]
+        panels = []
+        for panel in self._panels.values():
+            panels.append({'title': panel._meta.title, 'type': panel._meta.event_type})
+        panels.sort(operator.itemgetter('title'))
+        return panels
 
 site = TapzSite()

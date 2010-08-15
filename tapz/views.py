@@ -11,7 +11,7 @@ def index(request, event_type=None):
         except exceptions.PanelDoesNotExist:
             raise Http404
     else:
-        panel = panels[0]
+        panel = site.get_panel(panels[0]['type'])
     context = panel.get_context(request)
     context.update({'panels': site.get_panels()})
 
