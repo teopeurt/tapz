@@ -46,14 +46,6 @@ $(document).ready(function() {
             text: 'Number of Errors'
          }
       },
-      legend: {
-         layout: 'vertical',
-         backgroundColor: '#FFFFFF',
-         align: 'left',
-         verticalAlign: 'top',
-         x: 100,
-         y: 70
-      },
       tooltip: {
          formatter: function() {
             return ''+
