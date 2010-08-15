@@ -4,7 +4,7 @@ FILE_ROOT = normpath(join(dirname(__file__), pardir))
 
 USE_I18N = True
 
-MEDIA_ROOT = join(FILE_ROOT, 'media')
+MEDIA_ROOT = join(FILE_ROOT, '../tapz/media')
 
 MEDIA_URL = '/media'
 
