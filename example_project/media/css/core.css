@@ -96,9 +96,9 @@ a:hover { text-decoration: underline; }
 /* line 157, ../../../sass/core.sass */
 #nav li a { color: white; font-size: 18px; text-shadow: 1px 1px black; padding: 10px 10px 10px 50px; border: solid 1px transparent; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; -moz-background-clip: padding-box; -webkit-background-clip: padding-box; background-clip: padding-box; display: block; }
 /* line 165, ../../../sass/core.sass */
-#nav li.slow { background: url(/media/img/icon-slow.png) no-repeat; background-position: 5px 2px; }
+#nav li.page-speed { background: url(/media/img/icon-slow.png) no-repeat; background-position: 5px 2px; }
 /* line 168, ../../../sass/core.sass */
-#nav li.slow:hover, #nav li.slow.current { background-color: #0b0f0f; border-color: black; }
+#nav li.page-speed:hover, #nav li.page-speed.current { background-color: #0b0f0f; border-color: black; }
 /* line 171, ../../../sass/core.sass */
 #nav li.errors { background: url(/media/img/icon-exception.png) no-repeat; background-position: 5px 2px; }
 /* line 174, ../../../sass/core.sass */
