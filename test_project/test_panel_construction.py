@@ -12,7 +12,6 @@ class TestPanelWithMeta(Panel):
         event_type = 'EV_TYPE'
         routing_key = 'go-here'
         
-
 class TestPanelWithDimensions(Panel):
     dim1 = Dimension()
     dim2 = Dimension()
@@ -39,3 +38,27 @@ class TestPanelConstruction(TestCase):
         self.assertEquals(dims['dim1'].name, 'dim1')
         self.assertEquals(dims['dim2'].name, 'dim2')
 
+class TestRegistry(TestCase):
+    def setUp(self):
+        site._auto_discover()
+        self._registry_backup = site.__class__._panels
+        site.__class__._panels = {}
+        site.register(TestPanel)
+        site.register(TestPanelWithMeta)
+        site.register(TestPanelWithDimensions)
+
+    def tearDown(self):
+        site.__class__._panels = self._registry_backup
+
+    def test_get_panel_by_type(self):
+        self.assert_(isinstance(site.get_panel('testpanel'), TestPanel))
+        self.assert_(isinstance(site.get_panel('ev_type'), TestPanelWithMeta))
+
+    def test_get_all_panels(self):
+        panels = site.get_panels()
+        self.assertEquals(len(panels), 3)
+        # panels is sorted by panel title -- order matters with these
+        for i, panel in enumerate((TestPanelWithMeta, TestPanel, TestPanelWithDimensions)):
+            data = panels[i]
+            self.assertEquals(panel._meta.title, data['title'])
+            self.assertEquals(panel._meta.event_type, data['type'])
