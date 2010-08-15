@@ -59,7 +59,7 @@ $(document).ready(function() {
       tooltip: {
          formatter: function() {
             return ''+
-               this.x +': '+ this.y +' errors';
+               this.y +'k pages loaded around ' + this.x;
          }
       },
       plotOptions: {
