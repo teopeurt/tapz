@@ -8,6 +8,13 @@ from django.core.urlresolvers import get_urlconf, get_resolver
 from tapz.site import site
 from tapz.tasks import add_event
 
+
+def _get_installed_modules():
+    out = set()
+    for app in settings.INSTALLED_APPS:
+        out.add(app.split('.')[0])
+    return out
+
 class ErrorPanelMiddleware(object):
     """
     Simple middleware that catches all the errors in a django project, extracts
@@ -20,22 +27,41 @@ class ErrorPanelMiddleware(object):
     def _collect_exception_info(self, request, exception):
         # exception info
         exception_type, exception_value, exception_traceback = sys.exc_info()
- 
-        # only retrive last 10 lines
-        tb = traceback.extract_tb(exception_traceback, limit=10)
-            
-        # retrive final file and line number where the exception occured
-        file, line_number = tb[-1][:2]
+
+        module = ''
+        line_number = None
+        interesting_modules = getattr(settings, 'REPORT_ERRORS_FROM_MODULES', _get_installed_modules())
+
+        if interesting_modules:
+    
+            # only retrive last 10 lines
+            tb = traceback.extract_tb(exception_traceback, limit=10)
+                
+            # retrive final file and line number where the exception occured
+            file, line_number = tb[-1][:2]
+
+            for (filename, line, function, text) in reversed(tb):
+                for path in sys.path:
+                    if filename.startswith(path):
+                        module = file[len(path)+1:].replace('/', '.').replace('.py', '')
+                        line_number = line
+                        break
+                if module.split('.')[0] in interesting_modules:
+                    break
+            else:
+                module = None
+
+
             
         info = {
             'timestamp': time.time(),
             'url': request.build_absolute_uri(),
-            'file': file,
-            'line_number': line_number,
             'exc_name': exception_type.__name__,
             'exc_value': str(exception),
-            'traceback': tb
-            }
+        }
+
+        if module:
+            info.update({'module': module, 'line_number': line_number,})
         return info
 
 
