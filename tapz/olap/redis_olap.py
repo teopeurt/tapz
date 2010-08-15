@@ -123,8 +123,7 @@ class RedisOlap(object):
 
         return keys
 
-    def get_instances(self, event, **kwargs):
-        keys = self.get_keys(event, **kwargs)
+    def get_instances(self, event, keys):
         if not keys:
             return
 
