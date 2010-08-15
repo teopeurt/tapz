@@ -43,8 +43,10 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.admin',
-    'tapz.errors',
     'djcelery',
+    'tapz',
+    'tapz.errors',
+    'tapz.pagespeed',
 )
 
 SITE_ID = 1

@@ -81,10 +81,7 @@ class ErrorPanelMiddleware(object):
         info = self._collect_exception_info(request, exception)
             
         # send via celery
-        add_event.apply_async(
-            args=(ErrorPanel._meta.event_type, info),
-            routing_key=ErrorPanel._meta.routing_key
-            )
+        ErrorPanel.queue_event(info)
             
         # return 500 response the same way django would
         callback, param_dict = get_resolver(get_urlconf()).resolve500()

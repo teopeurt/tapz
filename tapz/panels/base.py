@@ -1,6 +1,6 @@
 from tapz.panels.options import PanelOptions
 from tapz.site import site
-from tapz import exceptions
+from tapz import exceptions, tasks
 
 class PanelMeta(type):
     """
@@ -33,6 +33,16 @@ class PanelMeta(type):
 
 class Panel(object):
     __metaclass__ = PanelMeta
+
+    @classmethod
+    def queue_event(cls, data):
+        """
+        Queues an event that this panel will later process
+        """
+        tasks.add_event.apply_async(
+            args=(cls._meta.event_type, data),
+            routing_key=cls._meta.routing_key
+            )
 
     def add_event(self, data):
         """
