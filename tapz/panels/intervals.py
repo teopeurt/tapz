@@ -30,7 +30,8 @@ class Interval(object):
 class Month(Interval):
     format_string = '%Y%m'
 
-    def range(self, start, end):
+    @classmethod
+    def range(cls, start, end):
         # there's no "months" arg for timedelta.
         r = []
         # reset the start date to the beginning of the month
