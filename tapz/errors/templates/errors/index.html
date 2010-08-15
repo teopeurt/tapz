@@ -34,11 +34,11 @@
             </ul>
             <ul class="items">
                 <li>
-                    <span class="num date">123<br/>mins ago</span>
-                    <span class="file">/usr/local/lib/python2.6/dist-packages/django/core/handlers/base.py</span>
-                    <span class="line">line 100</span>
-                    <span class="first">July 20. 2010: 23:05</span>
-                    <span class="last">July 20. 2010: 23:05</span>
+                    <span class="num date">{{ most_recent_error.last_occurred_at|timesince }} ago</span>
+                    <span class="file">{{ most_recent_error.path }}</span>
+                    <span class="line">line {{ most_recent_error.line_number }}</span>
+                    <span class="first">{{ most_recent_error.first }}</span>
+                    <span class="last">{{ most_recent_error.last }}</span>
                 </li>
             </ul>
         </div>
@@ -49,76 +49,15 @@
     <div class="wrap">
         <h2>common exceptions</h2>
         <ul class="items">
-            <li>
-                <span class="num high">123</span>
-                <span class="file">/usr/local/lib/python2.6/dist-packages/django/core/handlers/base.py</span>
-                <span class="line">line 100</span>
-                <span class="first">July 20. 2010: 23:05</span>
-                <span class="last">July 20. 2010: 23:05</span>
+            {% for err in top_errors %}
+            <li class="{% cycle "" "alt" %}">
+                <span class="num high">{{ err.count }}</span>
+                <span class="file">{{ err.path }}</span>
+                <span class="line">line {{ err.line_number }}</span>
+                <span class="first">{{ err.first }}</span>
+                <span class="last">{{ err.last }}</span>
             </li>
-            <li class="alt">
-                <span class="num high">123</span>
-                <span class="file">/usr/local/lib/python2.6/dist-packages/django/core/handlers/base.py</span>
-                <span class="line">line 100</span>
-                <span class="first">July 20. 2010: 23:05</span>
-                <span class="last">July 20. 2010: 23:05</span>
-            </li>
-            <li>
-                <span class="num mid">123</span>
-                <span class="file">/usr/local/lib/python2.6/dist-packages/django/core/handlers/base.py</span>
-                <span class="line">line 100</span>
-                <span class="first">July 20. 2010: 23:05</span>
-                <span class="last">July 20. 2010: 23:05</span>
-            </li>
-            <li class="alt">
-                <span class="num mid">123</span>
-                <span class="file">/usr/local/lib/python2.6/dist-packages/django/core/handlers/base.py</span>
-                <span class="line">line 100</span>
-                <span class="first">July 20. 2010: 23:05</span>
-                <span class="last">July 20. 2010: 23:05</span>
-            </li>
-            <li>
-                <span class="num mid">123</span>
-                <span class="file">/usr/local/lib/python2.6/dist-packages/django/core/handlers/base.py</span>
-                <span class="line">line 100</span>
-                <span class="first">July 20. 2010: 23:05</span>
-                <span class="last">July 20. 2010: 23:05</span>
-            </li>
-            <li class="alt">
-                <span class="num mid">123</span>
-                <span class="file">/usr/local/lib/python2.6/dist-packages/django/core/handlers/base.py</span>
-                <span class="line">line 100</span>
-                <span class="first">July 20. 2010: 23:05</span>
-                <span class="last">July 20. 2010: 23:05</span>
-            </li>
-            <li>
-                <span class="num low">123</span>
-                <span class="file">/usr/local/lib/python2.6/dist-packages/django/core/handlers/base.py</span>
-                <span class="line">line 100</span>
-                <span class="first">July 20. 2010: 23:05</span>
-                <span class="last">July 20. 2010: 23:05</span>
-            </li>
-            <li class="alt">
-                <span class="num low">123</span>
-                <span class="file">/usr/local/lib/python2.6/dist-packages/django/core/handlers/base.py</span>
-                <span class="line">line 100</span>
-                <span class="first">July 20. 2010: 23:05</span>
-                <span class="last">July 20. 2010: 23:05</span>
-            </li>
-            <li>
-                <span class="num low">123</span>
-                <span class="file">/usr/local/lib/python2.6/dist-packages/django/core/handlers/base.py</span>
-                <span class="line">line 100</span>
-                <span class="first">July 20. 2010: 23:05</span>
-                <span class="last">July 20. 2010: 23:05</span>
-            </li>
-            <li class="alt">
-                <span class="num low">123</span>
-                <span class="file">/usr/local/lib/python2.6/dist-packages/django/core/handlers/base.py</span>
-                <span class="line">line 100</span>
-                <span class="first">July 20. 2010: 23:05</span>
-                <span class="last">July 20. 2010: 23:05</span>
-            </li>
+            {% endfor %}
         <ul>
     </div>
 {% endblock %}
