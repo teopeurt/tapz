@@ -47,6 +47,7 @@ INSTALLED_APPS = (
     'tapz',
     'tapz.errors',
     'tapz.pagespeed',
+    'test_project'
 )
 
 SITE_ID = 1
