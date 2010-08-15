@@ -114,11 +114,12 @@ class RedisOlap(object):
             else:
                 key = '%s:%s:%s' % (event, dim, value)
             
-            # empty bucket, no need to actually query
+            keys.append(key)
+
+        for key in keys:
+            # found an empty bucket, no need to actually query anything
             if not self.redis.scard(key):
                 return []
-
-            keys.append(key)
 
         return keys
 
