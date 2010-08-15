@@ -22,7 +22,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-#    'tapz.error_panel.middleware.ErrorPanelMiddleware',
+    'tapz.errors.middleware.ErrorPanelMiddleware',
 )
 
 TEMPLATE_DIRS = (
@@ -44,6 +44,6 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.admin',
     'tapz',
-    'tapz.error_panel',
+    'tapz.errors',
 )
 

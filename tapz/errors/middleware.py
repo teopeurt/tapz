@@ -6,7 +6,7 @@ from django.conf import settings
 from django.http import Http404
 from django.core.urlresolvers import get_urlconf, get_resolver
 from tapz.tasks import add_event
-from tapz.error_panel.panels import ErrorPanel
+from tapz.errors.panels import ErrorPanel
 
 
 def _get_installed_modules():
