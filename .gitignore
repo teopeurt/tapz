@@ -2,3 +2,5 @@
 test_project/settings/local.py
 .*.swp
 tapz.egg-info
+test_project/.coverage
+test_project/cover

@@ -8,9 +8,13 @@ class PanelOptions(object):
         self.title = ''
         self.event_type = ''
         self.routing_key = ''
-        
+
     def contribute_to_class(self, cls, name):
         cls._meta = self
         self.title = getattr(self.meta, 'title', cls.__name__)
         self.event_type = getattr(self.meta, 'event_type', self.title.replace(' ', '_')).lower()
         self.routing_key = getattr(self.meta, 'routing_key', 'tapz.event.%s' % self.event_type)
+
+    def get_dimension(self, name):
+        return self.dimensions[name]
+
