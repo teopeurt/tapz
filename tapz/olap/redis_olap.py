@@ -123,11 +123,65 @@ class RedisOlap(object):
 
         return keys
 
-    def get_instances(self, event, keys):
+    def get_instances(self, keys):
+        """
+        Retrieve set of keys from redis.
+        """
         if not keys:
             return
 
         # TODO: don't mget all at once, do it in chunks
-        for e in self.redis.mget(map(lambda k: '%s:%s' % (event, k), self.redis.sinter(keys))):
+        for e in self.redis.mget(keys):
             yield anyjson.deserialize(e)
+
+    def compute_aggregation(self, event, aggregation, keys):
+        """
+        Given a final list of keys for a given cell in resulting grid. Compute
+        the aggregation.
+        """
+        ids = self.redis.sinter(keys)
+        if not aggregation or aggregation == self.COUNT:
+            return len(keys)
+
+        return aggregate(self.get_instances(event, map(lambda k: '%s:%s' % (event, k), ids)))
+
+    def aggregate(self, event, aggregation=None, filters=None, rows=None, columns=None):
+        """
+        Main top-level method used for accessing the data in OLAP.
+
+        Paramaters::
+
+            `event`:        name of the event
+            `aggregation`:  function that accepts and iterator of instances and returns result
+            `filters`:      dictionary containing global filters
+            `rows`:         list of dictionaries with filters defining individual rows
+            `columns`:      list of dictionaries with filters defining individual columns
+
+        Example::
+            olap.aggregate(
+                'page_views',
+                aggregation=SUM,
+                filters={'content_type': VIDEO},
+                rows=[{'time': 2009}, {'time__union': [201001, 201002, 201003,]},],
+                columns=[{'logged_in': True}, {'logged_in': False}]
+            )
+        """
+        if not rows:
+            raise RedisOlapException('You must specify at least on row when aggregating.')
+
+        columns = columns or []
+
+        row_keys = [self.get_keys(event, **row) for row in rows]
+        column_keys = [self.get_keys(event, **column) for column in columns]
+        if filters:
+            filter_keys = self.get_keys(event, **filters)
+        else:
+            filter_keys = []
+
+        # TODO: paralel execution?
+        for r in row_keys:
+            row = []
+            for c in column_keys:
+                row.append(self.compute_aggregation(event, aggregation, filter_keys + r + c))
+            yield row
 

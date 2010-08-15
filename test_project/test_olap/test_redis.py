@@ -60,8 +60,10 @@ class TestDataRetrieval(RedisOlapTestCase):
             self.redis.set('error:%s' % x, anyjson.serialize({'event': 'error:%s' % x}))
 
         keys = self.olap.get_keys('error', time='201008', name='ValueError')
+        ids = self.redis.sinter(keys)
+        keys = map(lambda k: '%s:%s' % ('error', k), ids)
 
-        values = set(map(anyjson.serialize, self.olap.get_instances('error', keys)))
+        values = set(map(anyjson.serialize, self.olap.get_instances(keys)))
         self.assertEquals(2, len(values))
         self.assertEquals(set([anyjson.serialize({'event': 'error:1'}), anyjson.serialize({'event': 'error:3'})]), values)
 
@@ -79,7 +81,9 @@ class TestDataRetrieval(RedisOlapTestCase):
             self.redis.set('error:%s' % x, anyjson.serialize({'event': 'error:%s' % x}))
 
         keys = self.olap.get_keys('error', time__union=('201008', '201009'), name='ValueError')
-        values = set(map(anyjson.serialize, self.olap.get_instances('error', keys)))
+        ids = self.redis.sinter(keys)
+        keys = map(lambda k: '%s:%s' % ('error', k), ids)
+        values = set(map(anyjson.serialize, self.olap.get_instances(keys)))
         self.assertEquals(2, len(values))
         self.assertEquals(set([anyjson.serialize({'event': 'error:1'}), anyjson.serialize({'event': 'error:3'})]), values)
 
