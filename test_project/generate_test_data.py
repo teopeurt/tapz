@@ -19,6 +19,8 @@ module_choices = (
     'tapz.views', 'django.contrib.views.list', 'eat.carrot.and.die', 'empire.strikes.back'
 )
 
+site_choices = range(1, 10)
+
 default_data = {
     "line_number": 11,
     "exc_name": "MyException",
@@ -34,13 +36,15 @@ def generate_data():
     out['exc_name'] = choice(name_choices)
     out['url'] = choice(url_choices)
     out['module'] = choice(module_choices)
+    out['site'] = choice(site_choices)
     out['timestamp'] = randrange(*time_range)
     return out
 
 
 def seed_data(count=10000):
     for x in xrange(count):
-        if x % 10 == 0:
+        if x % 100 == 0:
             sys.stdout.write('.')
+            sys.stdout.flush()
         data = generate_data()
         panel.add_event(data)
