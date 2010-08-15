@@ -1,4 +1,7 @@
 import operator
+
+from django.conf import settings
+
 from tapz.olap.redis_olap import RedisOlap
 from tapz import exceptions
 
@@ -7,7 +10,11 @@ class TapzSite(object):
     _initialized = False
 
     def __init__(self):
-        self.storage = RedisOlap()
+        self.storage = RedisOlap(
+            host=getattr(settings, 'OLAP_REDIS_HOST', 'localhost'),
+            db=getattr(settings, 'OLAP_REDIS_DB', 0),
+            port=getattr(settings, 'OLAP_REDIS_PORT', 6379)
+        )
 
     def _auto_discover(self):
         """

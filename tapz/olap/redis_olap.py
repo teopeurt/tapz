@@ -18,9 +18,8 @@ class RedisOlapException(Exception):
 class RedisOlap(object):
     NEXT_ID_KEY = '%s:next_id'
 
-    def __init__(self):
-        # TODO: configuration
-        self.redis = Redis()
+    def __init__(self, **kwargs):
+        self.redis = Redis(**kwargs)
 
     def register_event(self, event, dimensions):
         """
