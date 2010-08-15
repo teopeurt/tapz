@@ -116,11 +116,6 @@ class RedisOlap(object):
             
             keys.append(key)
 
-        for key in keys:
-            # found an empty bucket, no need to actually query anything
-            if not self.redis.scard(key):
-                return []
-
         return keys
 
     def get_instances(self, keys):
@@ -140,10 +135,10 @@ class RedisOlap(object):
         the aggregation.
         """
         ids = self.redis.sinter(keys)
-        if not aggregation or aggregation == self.COUNT:
+        if not aggregation:
             return len(keys)
 
-        return aggregate(self.get_instances(event, map(lambda k: '%s:%s' % (event, k), ids)))
+        return aggregation(self.get_instances(map(lambda k: '%s:%s' % (event, k), ids)))
 
     def aggregate(self, event, aggregation=None, filters=None, rows=None, columns=None):
         """

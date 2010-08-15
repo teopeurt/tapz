@@ -41,12 +41,6 @@ class TestDataRetrieval(RedisOlapTestCase):
         self.redis.sadd('error:dimensions', 'time')
         self.assertRaises(RedisOlapException, self.olap.get_keys, 'error', time=201008)
 
-    def test_get_keys_returns_empty_if_one_bucket_is_empty(self):
-        self.redis.sadd('error:dimensions', 'time')
-        self.redis.sadd('error:dimensions', 'name')
-        self.redis.sadd('error:time:201008', '1')
-        self.assertEquals(0, len(list(self.olap.get_keys('error', time='201008', name='ValueError'))))
-
     def test_get_instances_returns_correct_data(self):
         self.redis.sadd('error:dimensions', 'time')
         self.redis.sadd('error:dimensions', 'name')
@@ -87,4 +81,42 @@ class TestDataRetrieval(RedisOlapTestCase):
         self.assertEquals(2, len(values))
         self.assertEquals(set([anyjson.serialize({'event': 'error:1'}), anyjson.serialize({'event': 'error:3'})]), values)
 
+    def test_aggregation(self):
+        self.redis.sadd('error:dimensions', 'time')
+        self.redis.sadd('error:dimensions', 'name')
+        for x in range(2, 10):
+            self.redis.sadd('error:time:201008', x)
+        for x in range(3, 8):
+            self.redis.sadd('error:time:201009', x)
+        for x in range(1, 7):
+            self.redis.sadd('error:name:ValueError', x)
+        for x in range(4, 5):
+            self.redis.sadd('error:name:NameError', x)
+
+        for x in range(1, 10):
+            self.redis.set('error:%d' % x, anyjson.serialize({'event': 'error:%s' % x, 'amount': x}))
+
+        def sum(it):
+            out = 0
+            for i in it:
+                out += i['amount']
+            return out
+
+        expected = [
+            [0, 0],
+            [4, 2],
+            [4, 2]
+        ]
+
+        actual = list(
+            self.olap.aggregate(
+                'error',
+                aggregation=sum,
+                filters={'name': 'ValueError'},
+                rows=[{'time': '201007'}, {'time': '201008'}, {'time__union': ['201008', '201009']}],
+                columns=[{'name': 'NameError'}, {'name': 'ValueError', 'time__diff': ('201008', '201009')}]
+            )
+        )
+
+        self.assertEquals(expected, actual)
 
