@@ -6,3 +6,4 @@ class ErrorPanel(panels.Panel):
 
     class Meta:
         event_type = 'errors'
+        title = 'Errors'

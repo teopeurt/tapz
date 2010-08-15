@@ -17,6 +17,7 @@ class RedisOlapException(Exception):
 
 class RedisOlap(object):
     NEXT_ID_KEY = '%s:next_id'
+
     def __init__(self):
         # TODO: configuration
         self.redis = Redis()
@@ -70,18 +71,46 @@ class RedisOlap(object):
 
         keys = []
         for dim, value in kwargs.items():
+            operation = None
+
+            # specific operation requested
+            if '__' in dim:
+                dim, operation = dim.split('__', 1)
+
             # check proper parameters
             if dim not in valid_dimensions:
                 raise RedisOlapException('Invalid dimension name %r for event %s.' % (dim, event))
 
             # more sliced wanted, we have to union those
             if isinstance(value, (tuple, list)):
-                temp_dest = '%s:union:%s' % (event, ','.join(value))
-                self.redis.sunionstore(temp_dest, map(lambda value: '%s:%s:%s' % (event, dim, value), value))
-                self.redis.expire(temp_dest, 10)
-                key = temp_dest
+                for v in value:
+                    if not isinstance(v, str):
+                        raise RedisOlapException('Invalid value for filter %r (must be bytestring).' % dim)
+
+                # no operation or operatin is intersect, leave this for the final merging
+                if not operation or operation == 'intersect':
+                    keys.extend(value)
+                    continue
+
+                elif operation:
+                    if operation not in ('union', 'diff'):
+                        raise RedisOlapException('Invalid opeartion %r.' % operation)
+                    
+                    key = '%s:%s:%s' % (event, operation, ','.join(value))
+                    keys_to_merge = map(lambda value: '%s:%s:%s' % (event, dim, value), value)
+
+                    if operation == 'union':
+                        self.redis.sunionstore(key, keys_to_merge)
+                    else:
+                        self.redis.sdiffstore(key, keys_to_merge)
+
+                    self.redis.expire(key, 10)
+
             elif not isinstance(value, str):
                 raise RedisOlapException('Invalid value for filter %r (must be bytestring).' % dim)
+            elif operation:
+                # operation requested but only one value given
+                raise RedisOlapException('Invalid operation for value %r (must be list or tuple).' % value)
             else:
                 key = '%s:%s:%s' % (event, dim, value)
             
