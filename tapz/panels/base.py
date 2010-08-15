@@ -127,8 +127,10 @@ class Panel(object):
         i = request.GET.get('interval', request.COOKIES.get(COOKIE_INTERVAL, None))
         i = i in intervals and i or 'month'
         interval, delta = intervals[i]
-        end_date = datetime.datetime.now()
+        end_date = interval.get_now()
         start_date = end_date - delta
         self.add_cookie(request, COOKIE_INTERVAL, i)
         context['current_interval'] = i
-        return interval.range(start_date, end_date)
+        rng = interval.range(start_date, end_date)
+        context['date_range'] = interval.display_format(rng)
+        return rng

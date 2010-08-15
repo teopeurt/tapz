@@ -18,36 +18,55 @@ class Interval(object):
         """
         Pack a datetime object into a string
         """
-        return value.strftime(cls.format_string)
+        return value.strftime(cls.pack_format_string)
 
     @classmethod
     def unpack(cls, value):
         """
         Unpack a string into a datetime object
         """
-        return datetime.datetime.strptime(value, cls.format_string)
+        return datetime.datetime.strptime(value, cls.pack_format_string)
+
+    @classmethod
+    def display_format(cls, rng):
+        return [d.strftime(cls.display_format_string) for d in rng]
 
 class Month(Interval):
-    format_string = '%Y%m'
+    pack_format_string = '%Y%m'
+    display_format_string = "%M %y"
+
+    @classmethod
+    def get_now(cls):
+        return datetime.date.today()
 
     @classmethod
     def range(cls, start, end):
         # there's no "months" arg for timedelta.
         r = []
         # reset the start date to the beginning of the month
-        start = datetime.datetime(year=start.year, month=start.month, day=1)
+        start = datetime.date(year=start.year, month=start.month, day=1)
         while start <= end:
             r.append(start)
             if start.month == 12:
-                start = datetime.datetime(year=start.year+1, month=1, day=1)
+                start = datetime.date(year=start.year+1, month=1, day=1)
             else:
-                start = datetime.datetime(year=start.year, month=start.month+1, day=1)
+                start = datetime.date(year=start.year, month=start.month+1, day=1)
         return r
 
 class Day(Interval):
-    format_string = '%Y%m%d'
+    pack_format_string = '%Y%m%d'
     delta = datetime.timedelta(days=1)
+    display_format_string = "%m-%d-%y"
+
+    @classmethod
+    def get_now(cls):
+        return datetime.date.today()
 
 class Hour(Interval):
-    format_string = '%Y%m%d%H'
+    pack_format_string = '%Y%m%d%H'
     delta = datetime.timedelta(hours=1)
+    display_format_string = "%H"
+
+    @classmethod
+    def get_now(cls):
+        return datetime.datetime.now()
