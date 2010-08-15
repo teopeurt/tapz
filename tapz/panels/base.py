@@ -1,6 +1,5 @@
 from tapz.panels.options import PanelOptions
 from tapz.site import site
-from tapz.olap.redis_olap import RedisOlap
 
 class PanelMeta(type):
     """

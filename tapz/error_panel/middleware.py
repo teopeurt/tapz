@@ -10,6 +10,9 @@ from tapz.tasks import add_event
 
 
 def _get_installed_modules():
+    """
+    Generate a list of modules in settings.INSTALLED_APPS.
+    """
     out = set()
     for app in settings.INSTALLED_APPS:
         out.add(app.split('.')[0])
@@ -30,7 +33,12 @@ class ErrorPanelMiddleware(object):
 
         module = ''
         line_number = None
-        interesting_modules = getattr(settings, 'REPORT_ERRORS_FROM_MODULES', _get_installed_modules())
+        # get interesting module list either from settings or make some up
+        interesting_modules = getattr(
+            settings,
+            'REPORT_ERRORS_FROM_MODULES',
+            _get_installed_modules()
+        )
 
         if interesting_modules:
     
@@ -40,6 +48,7 @@ class ErrorPanelMiddleware(object):
             # retrive final file and line number where the exception occured
             file, line_number = tb[-1][:2]
 
+            # tiny hack to get the python path from filename
             for (filename, line, function, text) in reversed(tb):
                 for path in sys.path:
                     if filename.startswith(path):
