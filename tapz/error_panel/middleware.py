@@ -64,6 +64,7 @@ class ErrorPanelMiddleware(object):
             
         info = {
             'timestamp': time.time(),
+            'site': settings.SITE_ID,
             'url': request.build_absolute_uri(),
             'exc_name': exception_type.__name__,
             'exc_value': str(exception),

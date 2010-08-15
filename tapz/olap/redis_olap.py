@@ -74,10 +74,17 @@ class RedisOlap(object):
             if dim not in valid_dimensions:
                 raise RedisOlapException('Invalid dimension name %r for event %s.' % (dim, event))
 
-            if not isinstance(value, str):
+            # more sliced wanted, we have to union those
+            if isinstance(value, (tuple, list)):
+                temp_dest = '%s:union:%s' % (event, ','.join(value))
+                self.redis.sunionstore(temp_dest, map(lambda value: '%s:%s:%s' % (event, dim, value), value))
+                self.redis.expire(temp_dest, 10)
+                key = temp_dest
+            elif not isinstance(value, str):
                 raise RedisOlapException('Invalid value for filter %r (must be bytestring).' % dim)
+            else:
+                key = '%s:%s:%s' % (event, dim, value)
             
-            key = '%s:%s:%s' % (event, dim, value)
             # empty ucket, no need to actually query
             if not self.redis.scard(key):
                 return
