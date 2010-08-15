@@ -62,7 +62,7 @@ class RedisOlap(object):
                 top_v = v
         pipe.execute()
 
-    def get_data(self, event, **kwargs):
+    def get_keys(self, event, **kwargs):
         if not kwargs:
             raise RedisOlapException('You must filter on at least one dimension.')
 
@@ -85,11 +85,18 @@ class RedisOlap(object):
             else:
                 key = '%s:%s:%s' % (event, dim, value)
             
-            # empty ucket, no need to actually query
+            # empty bucket, no need to actually query
             if not self.redis.scard(key):
-                return
+                return []
 
             keys.append(key)
+
+        return keys
+
+    def get_instances(self, event, **kwargs):
+        keys = self.get_keys(event, **kwargs)
+        if not keys:
+            return
 
         # TODO: don't mget all at once, do it in chunks
         for e in self.redis.mget(map(lambda k: '%s:%s' % (event, k), self.redis.sinter(keys))):
