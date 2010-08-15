@@ -66,7 +66,7 @@ class TapzSite(object):
         panels = []
         for panel in self._panels.values():
             panels.append({'title': panel._meta.title, 'type': panel._meta.event_type})
-        panels.sort(operator.itemgetter('title'))
+        panels.sort(key=operator.itemgetter('title'))
         return panels
 
 site = TapzSite()

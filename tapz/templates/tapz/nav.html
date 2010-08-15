@@ -1,6 +1,6 @@
 <ul id="nav">
     {% for panel in panels %}
-        <li class="{{ panel.title }} current"><a href="/{{ panel.type }}/">{{ panel.title }}</a></li>
+        <li class="{{ panel.title }}{% ifequal current_panel panel.type %} current{% endifequal %}"><a href="{% url tapz-panel event_type=panel.type %}">{{ panel.title }}</a></li>
     {% endfor %}
     {% comment %}
     <li class="exception current"><a href="/exceptions/">Exceptions</a></li>

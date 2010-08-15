@@ -7,13 +7,16 @@ def index(request, event_type=None):
     panels = site.get_panels()
     if event_type:
         try:
-            panel = site.get_panel()
+            panel = site.get_panel(event_type)
         except exceptions.PanelDoesNotExist:
             raise Http404
     else:
         panel = site.get_panel(panels[0]['type'])
     context = panel.get_context(request)
-    context.update({'panels': site.get_panels()})
+    context.update({
+        'panels': site.get_panels(),
+        'current_panel': panel._meta.event_type
+        })
 
     return direct_to_template(
         request,

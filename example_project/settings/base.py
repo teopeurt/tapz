@@ -47,6 +47,7 @@ INSTALLED_APPS = (
     'djcelery',
     'tapz',
     'tapz.errors',
+    'tapz.pagespeed',
 )
 
 # celery config
