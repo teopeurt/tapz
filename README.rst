@@ -14,11 +14,16 @@ service.
 Requirements
 ------------
 
+All Python dependencies can be installed by either running setuptools or 
+pip using the requirements.txt file in /tapz. Once you have the dependencies
+installed, you can run Tapz locally with our example project. Change to the
+/example_project directory and run ./manage.py runserver.
+
 Tapz needs a place to store the event data that it collects. While the storage
 backends are technically pluggable, the only one that we've tested with is
-Redis. You'll need a Redis instance running on localhost play with Tapz. We've
-included a sample .rdb (Redis database) file in /example_project that has
-generated data. You can also generate your own set of data using the
+Redis. You'll need a Redis instance running on localhost to play with Tapz.
+We've included a sample .rdb (Redis database) file in /example_project that
+has generated data. You can also generate your own set of data using the
 "generate_test_data" script in /test_project.
 
 To log events, Tapz uses Celery to ensure it doesn't block your application.
