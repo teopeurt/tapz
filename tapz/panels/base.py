@@ -154,6 +154,7 @@ class Panel(object):
         start_date = end_date - delta
         self.add_cookie(request, COOKIE_INTERVAL, i)
         context['current_interval'] = i
+        context['detail_interval'] = interval
         rng = interval.range(start_date, end_date)
         context['date_range'] = interval.display_format(rng)
         return interval.pack_format(rng)

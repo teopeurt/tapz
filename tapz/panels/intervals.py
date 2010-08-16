@@ -35,7 +35,23 @@ class Interval(object):
     def pack_format(cls, rng):
         return [d.strftime(cls.pack_format_string) for d in rng]
 
+class Hour(Interval):
+    display_name = 'Hour'
+    divides_into = None
+    pack_format_string = '%Y%m%d%H'
+    delta = datetime.timedelta(hours=1)
+    display_format_string = "%H"
+
+class Day(Interval):
+    display_name = 'Day'
+    divides_into = Hour
+    pack_format_string = '%Y%m%d'
+    delta = datetime.timedelta(days=1)
+    display_format_string = "%m-%d-%y"
+
 class Month(Interval):
+    display_name = 'Month'
+    divides_into = Day
     pack_format_string = '%Y%m'
     display_format_string = "%M %y"
 
@@ -53,12 +69,3 @@ class Month(Interval):
                 start = datetime.datetime(year=start.year, month=start.month+1, day=1)
         return r
 
-class Day(Interval):
-    pack_format_string = '%Y%m%d'
-    delta = datetime.timedelta(days=1)
-    display_format_string = "%m-%d-%y"
-
-class Hour(Interval):
-    pack_format_string = '%Y%m%d%H'
-    delta = datetime.timedelta(hours=1)
-    display_format_string = "%H"
