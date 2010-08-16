@@ -75,6 +75,9 @@ class RedisOlap(object):
         pipe.execute()
 
     def get_last_instance(self, event):
+        """
+        Return the last instance for the given panel that was inserted
+        """
         id = self.redis.get(self.NEXT_ID_KEY % event)
         obj = self.redis.get('%s:%s' % (event, id))
         if not obj:
@@ -82,6 +85,13 @@ class RedisOlap(object):
         return anyjson.deserialize(obj)
 
     def get_keys(self, event, **kwargs):
+        """
+        Given the event type and set of filters as a dictionary, produce a set
+        of keys to sets whose intersetion will produce the desired output.
+
+        Note that some of these keys might be generated inside this method when
+        using __union or __diff query options.
+        """
         if not kwargs:
             raise RedisOlapException('You must filter on at least one dimension.')
 
