@@ -16,27 +16,34 @@ class ErrorPanel(panels.Panel):
 
     def call_index(self, request, context):
         rows = self.get_row_dimensions(request, context)
-        columns = self.get_column_dimensions(request, context)
         filters = self.get_filters(request, context)
         
-        chart_data = list(self.get_chart_data(rows=rows, columns=columns, filters=filters))
+        chart_data = list(self.get_chart_data(rows=rows, filters=filters))
         context['chart_data'] = chart_data
         context['number_of_errors'] = sum(chain(*chart_data))
-        context['number_of_unique_errors'] = 3 #random.randint(1, context['number_of_errors'])
         context['average_for_interval'] = float(context['number_of_errors']) / float(len(chart_data))
+        context['number_of_unique_errors'] = 3 #random.randint(1, context['number_of_errors'])
 
-        top_errors = []
-        for i in range(10):
+    
+        exc_type_values = list(site.storage.get_dimension_values(self._meta.event_type, 'type'))
+        date_filter = {'timestamp__union': context['packed_date_range']}
+        exc_counts = self.get_chart_data(rows=[{'type': t} for t in exc_type_values], filters=date_filter)
+
+        type_counts = zip(exc_counts, exc_type_values)
+        type_counts.sort()
+
+
+        for count, type in type_counts[:10]:
+            module, line_number = type.split(':')
             top_errors.append({
-                'count': random.randint((10-i)*500, (10-(i-1))*500),
-                'path': 'foo.bar.baz',
-                'line_number': random.randint(1, 500),
-                'first': 'FIRST_DATE',
-                'last': 'LAST_DATE'
+                'count': type,
+                'path': module,
+                'line_number': line_number,
                 })
         context['top_errors'] = top_errors
         context['most_recent_error'] = self.get_last_instance()
-        context['most_recent_error']['date'] = datetime.datetime.fromtimestamp(context['most_recent_error']['timestamp'])
+        if context['most_recent_error']:
+            context['most_recent_error']['date'] = datetime.datetime.fromtimestamp(context['most_recent_error']['timestamp'])
         return direct_to_template(request, 'errors/index.html', context)
 
     def call_list(self, request, context, **filters):
