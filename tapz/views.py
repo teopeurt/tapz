@@ -11,4 +11,7 @@ def index(request, event_type=None, sub_call=None):
             raise Http404
     else:
         panel = site.get_panel(panels[0]['type'])
-    return panel.get_response(request, sub_call)
+    try:
+        return panel.get_response(request, sub_call)
+    except exceptions.PanelMethodDoesNotExist:
+        raise Http404

@@ -95,7 +95,7 @@ class Panel(object):
         """
         if not sub_call:
             sub_call = 'index'
-        method = 'call_%s' % sub_call
+        method = 'call_%s' % sub_call.replace('-', '_')
         if not hasattr(self, method):
             raise exceptions.PanelMethodDoesNotExist("Missing method %s on panel: %s" % \
                                                      (method, self.__class__.__name__))

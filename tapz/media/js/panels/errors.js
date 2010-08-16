@@ -54,3 +54,14 @@ var chartOptions = {
 $(document).ready(function() {
    chart = new Highcharts.Chart(chartOptions);
 });
+
+$(document).ready(function() {
+    $('li.error').click(function() {
+        $("#masker").css("display", "block");
+        $("#loading").css("display", "block");
+        $.get($(this).attr('detail'), function(html) {
+            $("body").append(html);
+            $("#loading").css("display", "none");
+        })
+    });
+})
