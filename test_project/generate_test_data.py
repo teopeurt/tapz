@@ -1,3 +1,4 @@
+import time
 import sys
 from random import choice, randrange
 
@@ -6,7 +7,7 @@ from tapz.site import site
 panel = site.get_panel('errors')
 
 line_choices = (10, 11, 17, 326)
-time_range = (1270000344, 1281828344)
+time_range = (1270000344, int(time.time()) + 60 * 60 * 24 * 14)
 url_choices = (
     'http://testserver/fail/',
     'http://testserver/come/other/ur/',
