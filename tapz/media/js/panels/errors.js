@@ -59,7 +59,7 @@ $(document).ready(function() {
     $('li.error').click(function() {
         $("#masker").css("display", "block");
         $("#loading").css("display", "block");
-        $.get($(this).attr('detail'), function(html) {
+        $.get($(this).attr('list'), function(html) {
             $("body").append(html);
             $("#loading").css("display", "none");
         })

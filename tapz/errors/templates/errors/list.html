@@ -1,0 +1,34 @@
+{% extends "tapz/grids/popup_twocol.html"%}
+
+{% block col_header %}
+    <ul class="items">
+        <li class="error">
+            <span class="num high">{{ current_error.last_occurred_at|timesince }}</span>
+            <span class="file">{{ current_error.path }}</span>
+            <span class="line">line {{ current_error.line_number }}</span>
+            <span class="first">{{ current_error.first }}</span>
+            <span class="last">{{ current_error.last }}</span>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block col_one %}
+    <div class="wrap">
+        <ul class="items">
+            {% for error in errors %}
+            <li class="{% cycle "" "alt" %}" detail="{% url tapz-panel event_type=current_panel.type %}detail/id={{ error.id }}">
+                <span class="file">{{ error.url }}</span>
+                <span class="first">{{ error.date }}</span>
+            </li>
+            {% endfor %}
+        <ul>
+    </div>
+{% endblock %}
+
+{% block col_two %}
+    <div class="wrap">
+        <h2>http://www.giantbomb.com/url/reallylong/something.html</h2>
+        <pre id="error-detail"></pre>
+     </div>
+{% endblock %}
+    
