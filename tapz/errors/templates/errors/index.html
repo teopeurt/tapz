@@ -28,7 +28,7 @@
                     ARE UNIQUE
                 </li>
                 <li>
-                    <h3>5.5%</h3>
+                    <h3>{{ delta|floatformat }}%</h3>
                     INCREASE
                 </li>
                 <li>
@@ -37,7 +37,7 @@
                 </li>
             </ul>
             <ul class="items">
-                <li class="error" list="{% url tapz-panel event_type=current_panel.type %}list/?path={{ most_recent_error.module }}&line={{ most_recent_error.line_number }}">
+                <li class="error" list="{% url tapz-panel event_type=current_panel.type %}list/?source={{ most_recent_error.module }}:{{ most_recent_error.line_number }}">
                     <span class="num date">{{ most_recent_error.date|timesince }}</span>
                     <span class="file">{{ most_recent_error.module }}</span>
                     <span class="line">line {{ most_recent_error.line_number }}</span>
@@ -52,11 +52,11 @@
         <h2>common exceptions</h2>
         <ul class="items">
             {% for err in top_errors %}
-            <li class="error {% cycle "" "alt" %}" list="{% url tapz-panel event_type=current_panel.type %}list/?path={{ err.path }}&line={{ err.line_number }}">
+            <li class="error {% cycle "" "alt" %}" list="{% url tapz-panel event_type=current_panel.type %}list/?source={{ err.module }}:{{ err.line_number }}">
                 <span class="num high">{{ err.count }}</span>
-                <span class="file">{{ err.path }}</span>
+                <span class="file">{{ err.module }}</span>
                 <span class="line">line {{ err.line_number }}</span>
-                <span class="first">{{ err.first }}</span>
+                <span class="first">{{ err.url }}</span>
                 <span class="last">{{ err.last }}</span>
             </li>
             {% endfor %}
