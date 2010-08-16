@@ -16,7 +16,7 @@
     <div class="wrap">
         <ul class="items">
             {% for error in errors %}
-            <li class="{% cycle "" "alt" %}" detail="{% url tapz-panel event_type=current_panel.type %}detail/id={{ error.id }}">
+            <li class="detail {% cycle "" "alt" %}" detail="{% url tapz-panel event_type=current_panel.type %}detail/?id={{ error.id }}">
                 <span class="file">{{ error.url }}</span>
                 <span class="first">{{ error.date }}</span>
             </li>
@@ -27,8 +27,7 @@
 
 {% block col_two %}
     <div class="wrap">
-        <h2>http://www.giantbomb.com/url/reallylong/something.html</h2>
-        <pre id="error-detail"></pre>
+        <div id="error-detail"></div>
      </div>
 {% endblock %}
     
