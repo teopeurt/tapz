@@ -37,7 +37,7 @@
                 </li>
             </ul>
             <ul class="items">
-                <li class="error" detail="{% url tapz-panel event_type=current_panel.type %}detail/?path={{ most_recent_error.path }}&line={{ most_recent_error.line_number }}">
+                <li class="error" list="{% url tapz-panel event_type=current_panel.type %}list/?path={{ most_recent_error.path }}&line={{ most_recent_error.line_number }}">
                     <span class="num date">{{ most_recent_error.last_occurred_at|timesince }}</span>
                     <span class="file">{{ most_recent_error.path }}</span>
                     <span class="line">line {{ most_recent_error.line_number }}</span>
@@ -54,7 +54,7 @@
         <h2>common exceptions</h2>
         <ul class="items">
             {% for err in top_errors %}
-            <li class="error {% cycle "" "alt" %}" detail="{% url tapz-panel event_type=current_panel.type %}detail/?path={{ err.path }}&line={{ err.line_number }}">
+            <li class="error {% cycle "" "alt" %}" list="{% url tapz-panel event_type=current_panel.type %}list/?path={{ err.path }}&line={{ err.line_number }}">
                 <span class="num high">{{ err.count }}</span>
                 <span class="file">{{ err.path }}</span>
                 <span class="line">line {{ err.line_number }}</span>
