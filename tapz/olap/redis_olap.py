@@ -147,16 +147,25 @@ class RedisOlap(object):
 
         return keys
 
-    def get_instances(self, keys):
+    def get_instances(self, event, keys):
         """
         Retrieve set of keys from redis.
         """
         if not keys:
             return
+        ids = self.redis.sinter(keys)
+        instance_keys = map(lambda k: '%s:%s' % (event, k), ids)
 
         # TODO: don't mget all at once, do it in chunks
-        for e in self.redis.mget(keys):
+        for e in self.redis.mget(instance_keys):
             yield anyjson.deserialize(e)
+
+    def get_data(self, event, **kwargs):
+        """
+        Retrieve instances given a query.
+        """
+        keys = self.get_keys(event, **kwargs)
+        return self.get_instances(event, keys)
 
     def compute_aggregation(self, event, aggregation, keys):
         """
@@ -169,9 +178,8 @@ class RedisOlap(object):
             # TODO THIS CAUSES ISSUES ON MAXOS?
             #self.redis.expire(key, 10)
             return self.redis.scard(key)
-        ids = self.redis.sinter(keys)
 
-        return aggregation(self.get_instances(map(lambda k: '%s:%s' % (event, k), ids)))
+        return aggregation(self.get_instances(event, keys))
 
     def aggregate(self, event, aggregation=None, filters=None, rows=None, columns=None):
         """

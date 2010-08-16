@@ -1,8 +1,9 @@
 import datetime
 import random
 
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.views.generic.simple import direct_to_template
+from django.utils.encoding import smart_str
 
 from tapz import panels
 from tapz.site import site as tapz_site
@@ -40,8 +41,7 @@ class ErrorPanel(panels.Panel):
             exc_counts = self.get_chart_data(rows=[{'source': t} for t in exc_type_values], filters=date_filter)
 
             type_counts = zip(exc_counts, exc_type_values)
-            type_counts.sort()
-            type_counts.reverse()
+            type_counts.sort(reverse=True)
         else:
             type_counts = []
 
@@ -60,7 +60,7 @@ class ErrorPanel(panels.Panel):
             module, line_number = source.split(':')
             top_errors.append({
                 'count': count,
-                'path': module,
+                'module': module,
                 'line_number': line_number,
                 })
         context['top_errors'] = top_errors
@@ -69,23 +69,27 @@ class ErrorPanel(panels.Panel):
             context['most_recent_error']['date'] = datetime.datetime.fromtimestamp(context['most_recent_error']['timestamp'])
         return direct_to_template(request, 'errors/index.html', context)
 
-    def call_list(self, request, context, **filters):
-        errors = []
-        for i in range(10):
-            errors.append({
-                'id': 555,
-                'url': 'http://foo.com/path/to/url/',
-                'date': datetime.datetime.now(),
-            })
-        context['errors'] = errors
-        context['current_error'] = {
-            'last_occurred_at': datetime.datetime.now() - datetime.timedelta(days=1, hours=5),
-            'path': 'foo.bar.baz',
-            'line_number': random.randint(1, 500),
-            'first': 'FIRST_DATE',
-            'last': 'LAST_DATE'
-            }
+    def call_list(self, request, context):
+        source_dim = request.GET.get('source')
+        if not source_dim:
+            raise Http404()
+
+        source_dim = smart_str(source_dim)
         
+
+        errors = list(
+            tapz_site.storage.get_data(
+                self._meta.event_type,
+                timestamp__union=self.get_date_range(request, context),
+                source=source_dim
+            )
+        )
+        for e in errors:
+            e['date'] = datetime.datetime.fromtimestamp(e['timestamp'])
+
+        errors.sort(key=lambda x:x['timestamp'], reverse=True)
+        context['source'] = source_dim
+        context['errors'] = errors
         return direct_to_template(request, 'errors/list.html', context)
 
     def call_detail(self, request, context, **filters):
