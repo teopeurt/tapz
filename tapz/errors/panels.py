@@ -1,5 +1,6 @@
 import datetime
 import random
+from itertools import chain
 
 from django.http import HttpResponse
 from django.views.generic.simple import direct_to_template
@@ -14,13 +15,13 @@ class ErrorPanel(panels.Panel):
         title = 'Errors'
 
     def call_index(self, request, context, **filters):
-        chart_data = []
-        for _ in context['date_range']:
-            chart_data.append(random.randint(1, 100))
+        rows = self.get_row_dimensions(request, context)
+        columns = self.get_column_dimensions(request, context)
+        
+        chart_data = list(self.get_chart_data(rows=rows, columns=columns, filters=filters))
         context['chart_data'] = chart_data
-
-        context['number_of_errors'] = sum(chart_data)
-        context['number_of_unique_errors'] = random.randint(1, context['number_of_errors'])
+        context['number_of_errors'] = sum(chain(*chart_data))
+        context['number_of_unique_errors'] = 3 #random.randint(1, context['number_of_errors'])
         context['average_for_interval'] = float(context['number_of_errors']) / float(len(chart_data))
 
         top_errors = []
