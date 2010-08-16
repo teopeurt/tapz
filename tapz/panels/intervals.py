@@ -36,21 +36,17 @@ class Month(Interval):
     display_format_string = "%M %y"
 
     @classmethod
-    def get_now(cls):
-        return datetime.date.today()
-
-    @classmethod
     def range(cls, start, end):
         # there's no "months" arg for timedelta.
         r = []
         # reset the start date to the beginning of the month
-        start = datetime.date(year=start.year, month=start.month, day=1)
+        start = datetime.datetime(year=start.year, month=start.month, day=1)
         while start <= end:
             r.append(start)
             if start.month == 12:
-                start = datetime.date(year=start.year+1, month=1, day=1)
+                start = datetime.datetime(year=start.year+1, month=1, day=1)
             else:
-                start = datetime.date(year=start.year, month=start.month+1, day=1)
+                start = datetime.datetime(year=start.year, month=start.month+1, day=1)
         return r
 
 class Day(Interval):
@@ -58,15 +54,7 @@ class Day(Interval):
     delta = datetime.timedelta(days=1)
     display_format_string = "%m-%d-%y"
 
-    @classmethod
-    def get_now(cls):
-        return datetime.date.today()
-
 class Hour(Interval):
     pack_format_string = '%Y%m%d%H'
     delta = datetime.timedelta(hours=1)
     display_format_string = "%H"
-
-    @classmethod
-    def get_now(cls):
-        return datetime.datetime.now()
