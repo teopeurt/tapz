@@ -75,6 +75,20 @@ class Panel(object):
                 cleaned_data[key] = value
         return cleaned_data
 
+    def get_chart_data(self, rows, columns=None, aggregation=None, filters=None):
+        """
+        Return data grib obtained from the OLAP storage. Result is a two
+        dimensional array containg rows (list of columns, dummy column if no
+        column_dimensions).
+        """
+        return site.storage.aggregate(
+            self._meta.event_type,
+            aggregation=aggregation,
+            filters=filters,
+            rows=rows,
+            columns=columns
+        )
+
     def get_data(self, dimensions, limit=None):
         """
         Return all the data for this panel, if `limit` is given, only limit to
@@ -112,9 +126,19 @@ class Panel(object):
 
     def get_filters(self, request, context):
         """
-        Most (all?) of the time panels will want a date range
+        Get global filters set for this panel.
         """
-        return {'date_range': self.get_date_range(request, context)}
+        return {}
+
+    def get_row_dimensions(self, request, context):
+        """
+        Most (all?) of the time panels will display data based on time.
+        """
+        dates = self.get_date_range(request, context)
+        return [{'timestamp': d} for d in dates]
+
+    def get_column_dimensions(self, request, context):
+        return []
 
     def get_date_range(self, request, context):
         """
