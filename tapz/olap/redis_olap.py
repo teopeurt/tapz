@@ -122,7 +122,8 @@ class RedisOlap(object):
                     else:
                         self.redis.sdiffstore(key, keys_to_merge)
 
-                    self.redis.expire(key, 10)
+                    # TODO THIS CAUSES ISSUES ON MAXOS?
+                    #self.redis.expire(key, 10)
 
             elif not isinstance(value, str):
                 raise RedisOlapException('Invalid value for filter %r (must be bytestring).' % dim)
@@ -155,7 +156,8 @@ class RedisOlap(object):
         if not aggregation:
             key = '%s:sinterstore:%s' % (event, ','.join(keys))
             self.redis.sinterstore(key, keys)
-            self.redis.expire(key, 10)
+            # TODO THIS CAUSES ISSUES ON MAXOS?
+            #self.redis.expire(key, 10)
             return self.redis.scard(key)
         ids = self.redis.sinter(keys)
 
