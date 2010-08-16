@@ -196,6 +196,6 @@ class RedisOlap(object):
                 for c in column_keys:
                     row.append(self.compute_aggregation(event, aggregation, filter_keys + r + c))
             else:
-                row = append(self.compute_aggregation(event, aggregation, filter_keys + r))
+                row = self.compute_aggregation(event, aggregation, filter_keys + r)
             yield row
 

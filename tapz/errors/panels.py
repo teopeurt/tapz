@@ -1,10 +1,11 @@
 import datetime
 import random
-from itertools import chain
 
 from django.http import HttpResponse
 from django.views.generic.simple import direct_to_template
+
 from tapz import panels
+from tapz.site import site as tapz_site
 
 class ErrorPanel(panels.Panel):
     timestamp = panels.DateTimeDimension()
@@ -20,12 +21,12 @@ class ErrorPanel(panels.Panel):
         
         chart_data = list(self.get_chart_data(rows=rows, filters=filters))
         context['chart_data'] = chart_data
-        context['number_of_errors'] = sum(chain(*chart_data))
+        context['number_of_errors'] = sum(chart_data)
         context['average_for_interval'] = float(context['number_of_errors']) / float(len(chart_data))
         context['number_of_unique_errors'] = 3 #random.randint(1, context['number_of_errors'])
 
     
-        exc_type_values = list(site.storage.get_dimension_values(self._meta.event_type, 'type'))
+        exc_type_values = list(tapz_site.storage.get_dimension_values(self._meta.event_type, 'type'))
         date_filter = {'timestamp__union': context['packed_date_range']}
         exc_counts = self.get_chart_data(rows=[{'type': t} for t in exc_type_values], filters=date_filter)
 
@@ -33,6 +34,7 @@ class ErrorPanel(panels.Panel):
         type_counts.sort()
 
 
+        top_errors = []
         for count, type in type_counts[:10]:
             module, line_number = type.split(':')
             top_errors.append({
