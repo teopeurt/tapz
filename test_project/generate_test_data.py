@@ -43,9 +43,12 @@ def generate_data():
 
 
 def seed_data(count=10000):
-    for x in xrange(count):
+    for x in xrange(count-1):
         if x % 100 == 0:
             sys.stdout.write('.')
             sys.stdout.flush()
         data = generate_data()
         panel.add_event(data)
+    data = generate_data()
+    data['timestamp'] = int(time.time())
+    panel.add_event(data)
