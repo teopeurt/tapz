@@ -1,7 +1,7 @@
 import datetime
 
 from tapz.panels.options import PanelOptions
-from tapz.panels.intervals import Month, Day, Hour
+from tapz.panels.intervals import Day, Hour
 from tapz.site import site
 from tapz import exceptions, tasks
 

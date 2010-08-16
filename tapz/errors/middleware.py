@@ -5,7 +5,6 @@ import traceback
 from django.conf import settings
 from django.http import Http404
 from django.core.urlresolvers import get_urlconf, get_resolver
-from tapz.tasks import add_event
 from tapz.errors.panels import ErrorPanel
 
 

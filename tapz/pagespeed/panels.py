@@ -1,4 +1,3 @@
-import random
 from django.views.generic.simple import direct_to_template
 from tapz import panels
 

@@ -1,7 +1,6 @@
 import datetime
-import random
 
-from django.http import HttpResponse, Http404
+from django.http import Http404
 from django.views.generic.simple import direct_to_template
 from django.utils.encoding import smart_str
 
