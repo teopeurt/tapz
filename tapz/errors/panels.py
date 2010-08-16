@@ -32,7 +32,10 @@ class ErrorPanel(panels.Panel):
         chart_data = list(self.get_chart_data(rows=rows, filters=filters))
         context['chart_data'] = chart_data
         context['number_of_errors'] = sum(chart_data)
-        context['average_for_interval'] = float(context['number_of_errors']) / float(len(chart_data))
+        if chart_data:
+            context['average_for_interval'] = float(context['number_of_errors']) / float(len(chart_data))
+        else:
+            context['average_for_interval'] = 'N/A'
 
 
         exc_type_values = list(tapz_site.storage.get_dimension_values(self._meta.event_type, 'source'))
@@ -49,7 +52,10 @@ class ErrorPanel(panels.Panel):
         # previous interval
         previous_date_filter = {'timestamp__union': context['previous_packed_date_range']}
         previous_date_exceptions = list(self.get_chart_data(rows=[previous_date_filter]))
-        context['delta'] = 100 * (context['number_of_errors'] - previous_date_exceptions[0]) / float(context['number_of_errors'])
+        if context['number_of_errors']:
+            context['delta'] = 100 * (context['number_of_errors'] - previous_date_exceptions[0]) / float(context['number_of_errors'])
+        else:
+            context['delta'] = 'N/A'
 
         context['number_of_unique_errors'] = len([1 for (c, s) in type_counts if c != 0])
 
