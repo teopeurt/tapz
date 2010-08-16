@@ -57,6 +57,11 @@ $(document).ready(function() {
 
 $(document).ready(function() {
     $('li.error').click(function() {
-        $("#maybe").load($(this).attr('detail'))
+        $("#masker").css("display", "block");
+        $("#loading").css("display", "block");
+        $.get($(this).attr('detail'), function(html) {
+            $("body").append(html);
+            $("#loading").css("display", "none");
+        })
     });
 })
