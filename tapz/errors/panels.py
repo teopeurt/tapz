@@ -45,6 +45,12 @@ class ErrorPanel(panels.Panel):
         else:
             type_counts = []
 
+
+        # previous interval
+        previous_date_filter = {'timestamp__union': context['previous_packed_date_range']}
+        previous_date_exceptions = list(self.get_chart_data(rows=[previous_date_filter]))
+        context['delta'] = 100 * (context['number_of_errors'] - previous_date_exceptions[0]) / float(context['number_of_errors'])
+
         context['number_of_unique_errors'] = len([1 for (c, s) in type_counts if c != 0])
 
         top_errors = []
