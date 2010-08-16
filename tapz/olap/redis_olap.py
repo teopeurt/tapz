@@ -74,11 +74,18 @@ class RedisOlap(object):
                 top_v = v
         pipe.execute()
 
+
     def get_last_instance(self, event):
         """
         Return the last instance for the given panel that was inserted
         """
         id = self.redis.get(self.NEXT_ID_KEY % event)
+        return self.get_instance(event, id)
+
+    def get_instance(self, event, id):
+        """
+        Return instance with given ID
+        """
         obj = self.redis.get('%s:%s' % (event, id))
         if not obj:
             return None

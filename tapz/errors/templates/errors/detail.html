@@ -1,2 +1,6 @@
-<h2>{{ url }}</h2>
-<pre>{{ data }}</pre>
+<h2>{{ object.module }}: {{ object.line_number}} ({{ object.date|date}})</h2>
+<pre>
+{{ url }}
+{{ object.exc_name}}( {{ object.exc_value }} )
+...
+</pre>
