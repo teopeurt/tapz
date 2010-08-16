@@ -1,6 +1,8 @@
 Tapz
 ----
 
+You can see a live example of Tapz at: http://www.ihatexml.com/
+
 Tapz is an analytics engine that collects, stores and displays any data
 related to your website's operations. In theory, any type of metrics could be
 stored within Tapz, but we've only focused on a few use cases thus far:
