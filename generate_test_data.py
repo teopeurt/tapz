@@ -1,10 +1,8 @@
+#!/usr/bin/env python
 import time
 import sys
 from random import choice, randrange
 
-from tapz.site import site
-
-panel = site.get_panel('errors')
 
 line_choices = (10, 11, 17, 326)
 time_range = (1270000344, int(time.time()) + 60 * 60 * 24 * 14)
@@ -43,6 +41,9 @@ def generate_data():
 
 
 def seed_data(count=10000):
+    from tapz.site import site
+
+    panel = site.get_panel('errors')
     for x in xrange(count-1):
         if x % 100 == 0:
             sys.stdout.write('.')
@@ -52,3 +53,10 @@ def seed_data(count=10000):
     data = generate_data()
     data['timestamp'] = int(time.time())
     panel.add_event(data)
+
+if __name__ == '__main__':
+    import os
+    from os.path import dirname
+    os.environ['DJANGO_SETTINGS_MODULE'] = 'test_project.settings'
+    sys.path.insert(0, dirname(__file__))
+    seed_data()
