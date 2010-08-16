@@ -11,6 +11,7 @@
 {% block col_class %}errors{% endblock %}
 
 {% block col_one %}
+<div id="maybe"></div>
     <div class="wrap">
         <div class="graph">
             <div id="chart" style="width: 100%; height: 370px"></div>
@@ -35,7 +36,7 @@
                 </li>
             </ul>
             <ul class="items">
-                <li>
+                <li class="error" detail="{% url tapz-panel event_type=current_panel.type %}?path={{ most_recent_error.path }}&line={{ most_recent_error.line_number }}">
                     <span class="num date">{{ most_recent_error.last_occurred_at|timesince }}</span>
                     <span class="file">{{ most_recent_error.path }}</span>
                     <span class="line">line {{ most_recent_error.line_number }}</span>
@@ -52,7 +53,7 @@
         <h2>common exceptions</h2>
         <ul class="items">
             {% for err in top_errors %}
-            <li class="{% cycle "" "alt" %}">
+            <li class="error {% cycle "" "alt" %}" detail="{% url tapz-panel event_type=current_panel.type %}?path={{ err.path }}&line={{ err.line_number }}">
                 <span class="num high">{{ err.count }}</span>
                 <span class="file">{{ err.path }}</span>
                 <span class="line">line {{ err.line_number }}</span>

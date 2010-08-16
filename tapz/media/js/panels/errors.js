@@ -53,3 +53,9 @@ var chartOptions = {
 $(document).ready(function() {
    chart = new Highcharts.Chart(chartOptions);
 });
+
+$(document).ready(function() {
+    $('li.error').click(function() {
+        $("#maybe").load($(this).attr('detail'))
+    });
+})

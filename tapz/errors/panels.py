@@ -41,3 +41,5 @@ class ErrorPanel(panels.Panel):
             }
         return direct_to_template(request, 'errors/index.html', context)
 
+    def call_detail(self, request, context, **filters):
+        return direct_to_template(request, 'errors/detail.html', context)
