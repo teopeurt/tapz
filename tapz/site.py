@@ -57,6 +57,7 @@ class TapzSite(object):
             raise Exception("Two panels with the same event type: %s" % \
                 new_event_type)
         self.__class__._panels[new_event_type] = new_instance
+        self.storage.register_event(new_event_type, new_instance._meta.dimensions.keys())
 
     def get_panel(self, event_type):
         """
