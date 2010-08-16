@@ -76,9 +76,10 @@ class RedisOlap(object):
 
     def get_last_instance(self, event):
         id = self.redis.get(self.NEXT_ID_KEY % event)
-        if not id:
+        obj = self.redis.get('%s:%s' % (event, id))
+        if not obj:
             return None
-        return anyjson.deserialize(self.redis.get('%s:%s' % (event, id)))
+        return anyjson.deserialize(obj)
 
     def get_keys(self, event, **kwargs):
         if not kwargs:
