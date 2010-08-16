@@ -62,6 +62,13 @@ $(document).ready(function() {
         $.get($(this).attr('list'), function(html) {
             $("body").append(html);
             $("#loading").css("display", "none");
+            initListPanel();
         })
     });
 })
+
+function initListPanel() {
+    $("li.detail").click(function() {
+        $("#error-detail").load($(this).attr('detail'));
+    });
+}

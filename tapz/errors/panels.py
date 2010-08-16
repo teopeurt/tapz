@@ -64,7 +64,8 @@ class ErrorPanel(panels.Panel):
         return direct_to_template(request, 'errors/list.html', context)
 
     def call_detail(self, request, context, **filters):
-        return HttpResponse("""Traceback (most recent call last):
+        context['url'] = 'http://foo.com/example/'
+        context['data'] = """Traceback (most recent call last):
 
          File "http://www.giantbomb.com/something/url/reallylong.html", line 80, in get_response
            response = middleware_method(request)
@@ -143,4 +144,5 @@ class ErrorPanel(panels.Panel):
          'wsgi.run_once': False,
          'wsgi.url_scheme': 'http',
          'wsgi.version': (1, 0)}>
-        """)
+        """
+        return direct_to_template(request, 'errors/detail.html', context)
