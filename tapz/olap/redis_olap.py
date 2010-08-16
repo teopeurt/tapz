@@ -44,6 +44,7 @@ class RedisOlap(object):
         id = self._get_next_id(event)
         key = '%s:%d' % (event, id)
 
+        data['id'] = id
         pipe = self.redis.pipeline()
         pipe.set(key, anyjson.serialize(data))
         for dimension, values in dimension_map.items():
@@ -61,6 +62,12 @@ class RedisOlap(object):
                 pipe.sadd('%s:%s:%s:subkeys' % (event, dimension, top_v), v)
                 top_v = v
         pipe.execute()
+
+    def get_last_instance(self, event):
+        id = self.redis.get(self.NEXT_ID_KEY % event)
+        if not id:
+            return None
+        return anyjson.deserialize(self.redis.get('%s:%s' % (event, id)))
 
     def get_keys(self, event, **kwargs):
         if not kwargs:

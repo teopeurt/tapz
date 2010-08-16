@@ -89,6 +89,9 @@ class Panel(object):
             columns=columns
         )
 
+    def get_last_instance(self):
+        return site.storage.get_last_instance(self._meta.event_type)
+
     def get_data(self, dimensions, limit=None):
         """
         Return all the data for this panel, if `limit` is given, only limit to

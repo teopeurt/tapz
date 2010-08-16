@@ -35,13 +35,8 @@ class ErrorPanel(panels.Panel):
                 'last': 'LAST_DATE'
                 })
         context['top_errors'] = top_errors
-        context['most_recent_error'] = {
-            'last_occurred_at': datetime.datetime.now() - datetime.timedelta(days=1, hours=5),
-            'path': 'foo.bar.baz',
-            'line_number': random.randint(1, 500),
-            'first': 'FIRST_DATE',
-            'last': 'LAST_DATE'
-            }
+        context['most_recent_error'] = self.get_last_instance()
+        context['most_recent_error']['date'] = datetime.datetime.fromtimestamp(context['most_recent_error']['timestamp'])
         return direct_to_template(request, 'errors/index.html', context)
 
     def call_list(self, request, context, **filters):
