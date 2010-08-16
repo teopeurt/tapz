@@ -18,9 +18,9 @@ class TestEventCreation(RedisOlapTestCase):
         self.assertEquals(set(['time', 'other_dimension']), self.redis.smembers('event_name:dimensions'))
 
 class TestEventInsertion(RedisOlapTestCase):
-    def test_event_stored_in_full(self):
+    def test_event_stored_in_full_with_added_id(self):
         self.olap.insert('error', {'some': 42, 'complex': 'data'}, {})
-        self.assertEquals(anyjson.serialize({'some': 42, 'complex': 'data'}), self.redis.get('error:1'))
+        self.assertEquals(anyjson.serialize({'some': 42, 'complex': 'data', 'id': 1}), self.redis.get('error:1'))
 
     def test_event_registered_in_dimension_buckets(self):
         self.olap.insert('error', {'some': 'details'}, {'time': ['2010', '201008', '20100810'], 'name': ['ValueError']})
