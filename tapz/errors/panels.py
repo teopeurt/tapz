@@ -46,6 +46,8 @@ class ErrorPanel(panels.Panel):
 
         top_errors = []
         for count, source in type_counts[:10]:
+            if count == 0:
+                break
             module, line_number = source.split(':')
             top_errors.append({
                 'count': count,
