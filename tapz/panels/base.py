@@ -118,8 +118,7 @@ class Panel(object):
             'panels': site.get_panels(),
             'current_panel': site.make_meta(self),
             }
-        filters = self.get_filters(request, context)
-        response = getattr(self, method)(request, context, **filters)
+        response = getattr(self, method)(request, context)
         for name, value in request._new_cookies:
             response.set_cookie(name, value=value, max_age=60*60*24*365)
         return response

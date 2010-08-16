@@ -14,9 +14,10 @@ class ErrorPanel(panels.Panel):
         event_type = 'errors'
         title = 'Errors'
 
-    def call_index(self, request, context, **filters):
+    def call_index(self, request, context):
         rows = self.get_row_dimensions(request, context)
         columns = self.get_column_dimensions(request, context)
+        filters = self.get_filters(request, context)
         
         chart_data = list(self.get_chart_data(rows=rows, columns=columns, filters=filters))
         context['chart_data'] = chart_data
