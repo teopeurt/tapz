@@ -133,4 +133,4 @@ class Panel(object):
         context['current_interval'] = i
         rng = interval.range(start_date, end_date)
         context['date_range'] = interval.display_format(rng)
-        return rng
+        return interval.pack_format(rng)

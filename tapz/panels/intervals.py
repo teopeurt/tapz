@@ -31,6 +31,10 @@ class Interval(object):
     def display_format(cls, rng):
         return [d.strftime(cls.display_format_string) for d in rng]
 
+    @classmethod
+    def pack_format(cls, rng):
+        return [d.strftime(cls.pack_format_string) for d in rng]
+
 class Month(Interval):
     pack_format_string = '%Y%m'
     display_format_string = "%M %y"
