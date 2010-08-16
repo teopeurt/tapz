@@ -158,9 +158,10 @@ class RedisOlap(object):
         """
         Retrieve set of keys from redis.
         """
-        if not keys:
-            return
         ids = self.redis.sinter(keys)
+
+        if not ids:
+            return
         instance_keys = map(lambda k: '%s:%s' % (event, k), ids)
 
         # TODO: don't mget all at once, do it in chunks
