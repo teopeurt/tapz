@@ -34,7 +34,7 @@ class ErrorPanel(panels.Panel):
         context['number_of_errors'] = sum(chart_data)
         context['average_for_interval'] = float(context['number_of_errors']) / float(len(chart_data))
 
-    
+
         exc_type_values = list(tapz_site.storage.get_dimension_values(self._meta.event_type, 'source'))
         if exc_type_values:
             date_filter = {'timestamp__union': context['packed_date_range']}

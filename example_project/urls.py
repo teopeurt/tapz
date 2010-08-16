@@ -11,5 +11,5 @@ if getattr(settings, "ENABLE_DEBUG_URLS", False):
     )
 
 urlpatterns += patterns('',
-    (r'^tapz/', include('tapz.urls')),
+    (r'', include('tapz.urls')),
 )
