@@ -58,7 +58,7 @@ class Panel(object):
         # slice dimensions
         dimensions = {}
         for dim_name, dim in self._meta.dimensions.items():
-            dimensions[dim_name] = dim.split(cleaned_data[dim_name])
+            dimensions[dim_name] = dim.split(cleaned_data)
         site.storage.insert(self._meta.event_type, cleaned_data, dimensions)
 
     def clean(self, data):
