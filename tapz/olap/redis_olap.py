@@ -178,7 +178,10 @@ class RedisOlap(object):
         # TODO: paralel execution?
         for r in row_keys:
             row = []
-            for c in column_keys:
-                row.append(self.compute_aggregation(event, aggregation, filter_keys + r + c))
+            if column_keys:
+                for c in column_keys:
+                    row.append(self.compute_aggregation(event, aggregation, filter_keys + r + c))
+            else:
+                row.append(self.compute_aggregation(event, aggregation, filter_keys + r))
             yield row
 
