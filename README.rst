@@ -38,6 +38,31 @@ it within your Django MIDDLEWARE_CLASSES for Tapz to start logging exception
 data.
 
 
+Design
+------
+
+Panels
+======
+Panels drive Tapz. Panels are pluggable classes in Tapz that provide event
+logging, data querying, and rendering services. Tapz comes with two panels,
+the Errors panel which tracks exceptions raised by your app, and the Page
+Speed panel that shows rendering speed of views. The Page Speed panel
+isn't actually implemented yet -- it's included as a demonstration that
+multiple panels can in fact be plugged in to Tapz.
+
+Dimensions
+==========
+Dimensions are how you filter and slice data sets. Dimensions are added to
+panels just like fields are added to database models. There are several
+canned dimensions, including a DateTimeDimension, a SiteDimension that
+allows Tapz to store data from many Django apps connected via the Sites
+framework, and a RelatedObjectDimension allowing for filtering on ForeignKey
+and OneToOne fields.
+
+Tapz includes a queryset-like API to fetch data from the OLAP store.
+You can filter data, and then specify a slice of columns and rows to return.
+
+
 Tests
 -----
 
