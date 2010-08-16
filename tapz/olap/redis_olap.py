@@ -31,6 +31,13 @@ class RedisOlap(object):
             pipe.sadd(key, d)
         pipe.execute()
 
+    def get_dimension_values(self, event, dimension, super_value=None):
+        if super_value:
+            key = '%s:%s:%s' % (event, dimension, super_value)
+        else:
+            key = '%s:%s' % (event, dimension)
+        return self.redis.smembers(key)
+
     def _get_next_id(self, event):
         """
         Generate and return an ID for given `event`.
@@ -184,11 +191,11 @@ class RedisOlap(object):
 
         # TODO: paralel execution?
         for r in row_keys:
-            row = []
             if column_keys:
+                row = []
                 for c in column_keys:
                     row.append(self.compute_aggregation(event, aggregation, filter_keys + r + c))
             else:
-                row.append(self.compute_aggregation(event, aggregation, filter_keys + r))
+                row = append(self.compute_aggregation(event, aggregation, filter_keys + r))
             yield row
 
