@@ -63,8 +63,12 @@ class RedisOlap(object):
             for v in values:
                 pipe.sadd('%s:%s:%s' % (event, dimension, v), id)
 
-            # report dependencies between subbuckets
             top_v = values[0]
+
+            # store the top level dimension
+            pipe.sadd('%s:%s' % (event, dimension), top_v)
+
+            # report dependencies between subbuckets
             for v in values[1:]:
                 pipe.sadd('%s:%s:%s:subkeys' % (event, dimension, top_v), v)
                 top_v = v

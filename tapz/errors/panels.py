@@ -7,9 +7,18 @@ from django.views.generic.simple import direct_to_template
 from tapz import panels
 from tapz.site import site as tapz_site
 
+def display_source(data):
+    if 'module' in data:
+        return '%s:%d' % (data['module'], data['line_number'])
+    return 'UNKNOWN'
+
+def get_source(data):
+    return ['%s:%d' % (data.get('module', '<UNKNOWN>'), data.get('line_number', 0))]
+
 class ErrorPanel(panels.Panel):
     timestamp = panels.DateTimeDimension()
     site = panels.SiteDimension()
+    source = panels.GenericDimension(get_source, display_source)
 
     class Meta:
         event_type = 'errors'
@@ -23,22 +32,23 @@ class ErrorPanel(panels.Panel):
         context['chart_data'] = chart_data
         context['number_of_errors'] = sum(chart_data)
         context['average_for_interval'] = float(context['number_of_errors']) / float(len(chart_data))
-        context['number_of_unique_errors'] = 3 #random.randint(1, context['number_of_errors'])
 
     
-        exc_type_values = list(tapz_site.storage.get_dimension_values(self._meta.event_type, 'type'))
+        exc_type_values = list(tapz_site.storage.get_dimension_values(self._meta.event_type, 'source'))
         date_filter = {'timestamp__union': context['packed_date_range']}
-        exc_counts = self.get_chart_data(rows=[{'type': t} for t in exc_type_values], filters=date_filter)
+        exc_counts = self.get_chart_data(rows=[{'source': t} for t in exc_type_values], filters=date_filter)
 
         type_counts = zip(exc_counts, exc_type_values)
         type_counts.sort()
+        type_counts.reverse()
 
+        context['number_of_unique_errors'] = len([1 for (c, s) in type_counts if c != 0])
 
         top_errors = []
-        for count, type in type_counts[:10]:
-            module, line_number = type.split(':')
+        for count, source in type_counts[:10]:
+            module, line_number = source.split(':')
             top_errors.append({
-                'count': type,
+                'count': count,
                 'path': module,
                 'line_number': line_number,
                 })
