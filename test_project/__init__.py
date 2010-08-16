@@ -10,6 +10,8 @@ old_config = None
 DJANGO_SETTINGS_MODULE = '%s.%s' % (split(abspath(dirname(__file__)))[1], 'settings')
 # django needs this env variable
 os.environ['DJANGO_SETTINGS_MODULE'] = DJANGO_SETTINGS_MODULE
+# tell celery to always run from django
+os.environ['CELERY_LOADER'] = 'django'
 # pythonpath dirs
 sys.path.insert(0, abspath(join( dirname(__file__), pardir)))
 
