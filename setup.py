@@ -23,7 +23,7 @@ setup(
 
     packages = find_packages(
         where = '.',
-        exclude = ('docs', 'test_project', 'example_project',)
+        exclude = ('test_project', 'example_project',)
     ),
     test_suite = "nose.collector",
 
