@@ -21,8 +21,6 @@ TEMPLATE_LOADERS = (
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
     #'tapz.errors.middleware.ErrorPanelMiddleware',
 )
 
@@ -35,24 +33,13 @@ TEMPLATE_DIRS = (
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.media',
-    'django.core.context_processors.auth',
 )
 
 INSTALLED_APPS = (
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.sites',
-    'django.contrib.admin',
     'djcelery',
     'tapz',
     'tapz.errors',
     'tapz.pagespeed',
 )
-
-# celery config
-CARROT_BACKEND = 'memory'
-CELERY_ALWAYS_EAGER = True
-CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
 
 

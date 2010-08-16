@@ -6,22 +6,16 @@ MANAGERS = ADMINS
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
-ENABLE_DEBUG_URLS = DEBUG
+ENABLE_DEBUG_URLS = True
 
-DATABASES = { 
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': join(gettempdir(), 'tapz_test_project.db'),                      # Or path to database file if using sqlite3.
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-    }   
-}
-
+DATABASES = { }
 
 # we want to reset whole cache in test
 # until we do that, don't use cache
 CACHE_BACKEND = 'dummy://'
 
 
+# celery config
+CARROT_BACKEND = 'memory'
+CELERY_ALWAYS_EAGER = True
+CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
