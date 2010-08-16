@@ -35,12 +35,15 @@ class ErrorPanel(panels.Panel):
 
     
         exc_type_values = list(tapz_site.storage.get_dimension_values(self._meta.event_type, 'source'))
-        date_filter = {'timestamp__union': context['packed_date_range']}
-        exc_counts = self.get_chart_data(rows=[{'source': t} for t in exc_type_values], filters=date_filter)
+        if exc_type_values:
+            date_filter = {'timestamp__union': context['packed_date_range']}
+            exc_counts = self.get_chart_data(rows=[{'source': t} for t in exc_type_values], filters=date_filter)
 
-        type_counts = zip(exc_counts, exc_type_values)
-        type_counts.sort()
-        type_counts.reverse()
+            type_counts = zip(exc_counts, exc_type_values)
+            type_counts.sort()
+            type_counts.reverse()
+        else:
+            type_counts = []
 
         context['number_of_unique_errors'] = len([1 for (c, s) in type_counts if c != 0])
 
